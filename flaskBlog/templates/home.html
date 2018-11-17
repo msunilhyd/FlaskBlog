@@ -2,6 +2,10 @@
 
 {% block content %}
 
+
+
+{% if current_user.is_authenticated %}
+
 	{% for post in posts %}
 
 		<article class="media content-section">
@@ -27,5 +31,16 @@
 		</article>
 
 	{% endfor %}
+{% else %}
+
+			<div class="media-body">
+				<div class="article-metadata">
+				<h2> Please Login ! </h2>
+				</div>
+			</div>
+
+
+{% endif  %}
+
 
 {% endblock content %}

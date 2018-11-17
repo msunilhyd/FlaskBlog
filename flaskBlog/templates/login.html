@@ -3,7 +3,7 @@
 
 {% block content %}
 
-	<div class="content-section">
+	<div class="form-section">
 		<form method="POST" action="">
 			{{ form.hidden_tag() }}
 			<fieldset class="form-group">
@@ -48,17 +48,19 @@
 			<div class="form-group">
 				{{ form.submit(class="btn btn-outline-info") }}
 			</div>
-			<small class="text-muted ml-2">
+			<small class="text-muted">
 				<a href="#">Forgot Password ?</a>
 			</small>
 
-		</form>
-	</div>
-	<div class="border-top pt-3">
+	<div class="form-group">
 		<small class="text-muted">
 			Need an Account?
-			<a class="ml-2" href="{{ url_for('register') }}"> Sign In </a>
+			<a class="ml-2" href="{{ url_for('register') }}"> Register </a>
 		</small>
 	</div>
+
+		</form>
+	</div>
+
 
 {% endblock content %}
