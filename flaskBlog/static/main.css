@@ -30,7 +30,7 @@ html, body {
 
 .carousel-item {
   height: 37vh;
-  min-height: 600px;
+  min-height: 850px;
   background: no-repeat center center scroll;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -117,12 +117,12 @@ a.article-title:hover {
 
 /*---Firefox Bug Fix --*/
 .carousel-item {
-  transition: -webkit-transform 0.5s ease;
-  transition: transform 0.5s ease;
-  transition: transform 0.5s ease;
-  transition: transform 0.5s ease;
-  transition: transform 0.5s ease;
-  transition: transform 0.5s ease, -webkit-transform 0.5s ease;
+  transition: -webkit-transform 1.0s ease;
+  transition: transform 1.0s ease;
+  transition: transform 1.0s ease;
+  transition: transform 1.0s ease;
+  transition: transform 1.0s ease;
+  transition: transform 1.0s ease, -webkit-transform 0.5s ease;
   -webkit-backface-visibility: visible;
   backface-visibility: visible;
 }
