@@ -1,4 +1,5 @@
 import os
+import secrets
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskBlog import app, db, bcrypt
 from flaskBlog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
@@ -10,8 +11,9 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route("/")
 def main():
-	posts = Post.query.all()
-	return render_template('main.html', posts=posts)
+	page = request.args.get('page', 1, type=int)
+	posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+	return render_template('home.html', posts=posts)
 
 @app.route("/user/<string:username>")
 def user_posts(username):	
@@ -76,9 +78,13 @@ def logout():
 
 
 def save_picture(form_picture):
-	picture_fn = form_picture.filename
+	random_hex = secrets.token_hex(8)
+	_, f_ext = os.path.splitext(form_picture.filename)
+	picture_fn = random_hex + f_ext
 	picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
 	form_picture.save(picture_path)
+
+	return picture_fn
 
 
 @app.route("/account", methods=['GET', 'POST'])
@@ -87,7 +93,8 @@ def account():
 	form = UpdateAccountForm()
 	if form.validate_on_submit():
 		if form.picture.data:
-			current_user.image_file = form.picture.data.filename
+			picture_file = save_picture(form.picture.data)
+			current_user.image_file = picture_file
 		current_user.username = form.username.data
 		current_user.email = form.email.data
 		db.session.commit()	
@@ -100,15 +107,29 @@ def account():
 	return render_template('account.html', title="Account", image_file=image_file, form=form)
 
 
+def save_post_picture(form_picture):
+	random_hex = secrets.token_hex(8)
+	_, f_ext = os.path.splitext(form_picture.filename)
+	picture_fn = random_hex + f_ext
+	picture_path = os.path.join(app.root_path, 'static/post_pics', picture_fn)
+	form_picture.save(picture_path)
+
+	return picture_fn
+
 @app.route("/post/new", methods=['GET', 'POST'])
 @login_required
 def new_post():
 	form = PostForm()
 	if form.validate_on_submit():
-		post = Post(title=form.title.data, content=form.content.data, author=current_user)
+		if form.picture.data:
+			print("Hello")
+			picture_file = save_post_picture(form.picture.data)
+			post = Post(title=form.title.data, content=form.content.data, author=current_user, post_image_file=picture_file)
+		else :
+			post = Post(title=form.title.data, content=form.content.data, author=current_user)
 		db.session.add(post)
 		db.session.commit()
-		flash("You post have been created", "success")
+		flash("You post has been created", "success")
 		return redirect(url_for('home'))
 	return render_template('create_post.html', title="New Post", form=form, legend='New Post')
 
@@ -130,6 +151,11 @@ def update_post(post_id):
 	if form.validate_on_submit():
 		post.title = form.title.data
 		post.content = form.content.data
+		if form.picture.data:
+			picture_file = save_post_picture(form.picture.data)
+			post = Post(title=form.title.data, content=form.content.data, author=current_user, post_image_file=picture_file)
+		else :
+			post = Post(title=form.title.data, content=form.content.data, author=current_user)
 		db.session.commit()
 		flash("Your post has been updated !", "success")
 		return redirect(url_for('post', post_id=post.id))

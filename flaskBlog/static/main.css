@@ -8,9 +8,18 @@ html, body {
   width: 100%;
   font-family: 'Poppins', sans-serif;
   color:#222;
-  background-color: lightblue;
 }  
 
+.iterations{
+  padding-left: 402px
+}
+.user-posts-heading{
+  padding-left: 315px
+}
+
+.article-user-name{
+    font-size: 2.5rem;
+}
 .navbar {
   padding: .8rem;
 }
@@ -44,7 +53,7 @@ html, body {
   padding: 20px 20px 20px 20px;
   margin-bottom: 10px;
   margin-right: 300px;
-  margin-left: 150px; 
+  margin-left: 300px;
 }
 
 .form-section {
@@ -65,7 +74,8 @@ a.article-title:hover {
 }
 
 .article-content {
-  white-space: pre-line;
+  /*Commenting this for now -> white-space: pre-line;*/
+  font-size: 2.5rem;
 }
 
 .article-img {

@@ -5,7 +5,7 @@
 
 {% if current_user.is_authenticated %}
 
-<h1 class="mb-3"> Posts by {{user.username}} </h1>
+<h1 class="mb-3 user-posts-heading"> Posts by {{user.username}} </h1>
 	{% for post in posts.items %}
 
 		<article class="media content-section">
@@ -26,6 +26,11 @@
 				<p class="article-content">
 					{{ post.content }}
 				</p>
+				{% if post.post_image_file %}
+					<p class="article-content">
+						<img src="{{ url_for('static', filename = 'post_pics/'+ post.post_image_file) }}" class="img-responsive" width=""600 height="500">
+					</p>
+				{% endif%}
 			</div>
 
 		</article>
