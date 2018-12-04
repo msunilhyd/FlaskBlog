@@ -1,67 +1,35 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
-
-
-
-
-html, body {
-  height: 100%;
-  width: 100%;
-  font-family: 'Poppins', sans-serif;
-  color:#222;
-}  
-
-.iterations{
-  padding-left: 402px
-}
-.user-posts-heading{
-  padding-left: 315px
+body {
+  background: #fafafa;
+  color: #333333;
+  margin-top: 5rem;
 }
 
-.article-user-name{
-    font-size: 2.5rem;
-}
-.navbar {
-  padding: .8rem;
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
 }
 
-.navbar-nav li{
-  padding-right: 20px;
+.bg-steel {
+  background-color: #5f788a;
 }
 
-.nav-link {
-  font-size: 1.1em !important;
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
 }
 
 .site-header .navbar-nav .nav-link:hover {
   color: #ffffff;
 }
 
-
-.carousel-item {
-  height: 37vh;
-  min-height: 850px;
-  background: no-repeat center center scroll;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
 }
-
 
 .content-section {
   background: #ffffff;
-  padding: 20px 20px 20px 20px;
-  margin-bottom: 10px;
-  margin-right: 300px;
-  margin-left: 300px;
-}
-
-.form-section {
-  background: #ffffff;
-  padding: 20px 20px 20px 20px;
-  margin-bottom: 10px;
-  margin-right: 450px;
-  margin-left: 400px; 
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
 }
 
 .article-title {
@@ -74,8 +42,7 @@ a.article-title:hover {
 }
 
 .article-content {
-  /*Commenting this for now -> white-space: pre-line;*/
-  font-size: 2.5rem;
+  white-space: pre-line;
 }
 
 .article-img {
@@ -95,7 +62,6 @@ a.article-title:hover {
   text-decoration: none;
 }
 
-
 .article-svg {
   width: 25px;
   height: 25px;
@@ -113,88 +79,21 @@ a.article-title:hover {
   font-size: 2.5rem;
 }
 
-/*---Media Queries --*/
-@media (max-width: 992px) {
-
-  }
-@media (max-width: 768px) {
-  
-}
-@media (max-width: 576px) {
-  
+#video {
+    position: relative;
+    right: 0;
+    bottom: 0;
+    top : -1rem;
+    min-width: 100%; 
+    min-height: 100%;
 }
 
-
-/*---Firefox Bug Fix --*/
-.carousel-item {
-  transition: -webkit-transform 1.0s ease;
-  transition: transform 1.0s ease;
-  transition: transform 1.0s ease;
-  transition: transform 1.0s ease;
-  transition: transform 1.0s ease;
-  transition: transform 1.0s ease, -webkit-transform 0.5s ease;
-  -webkit-backface-visibility: visible;
-  backface-visibility: visible;
+.vid_content {
+    position: fixed;
+    bottom: 0;
+    color: #f1f1f1;
+    width: 100%;
+    padding: 20px;
+    font-size: 1.5rem;
+    color: #444444
 }
-/*--- Fixed Background Image --*/
-figure {
-  position: relative;
-  width: 100%;
-  height: 60%;
-  margin: 0!important;
-}
-.fixed-wrap {
-  clip: rect(0, auto, auto, 0);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-#fixed {
-  background-image: url('img/mac.png');
-  position: fixed;
-  display: block;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center center;
-  -webkit-transform: translateZ(0);
-          transform: translateZ(0);
-  will-change: transform;
-}
-/*--- Bootstrap Padding Fix --*/
-[class*="col-"] {
-    padding: 1rem;
-}
-
-
-
-
-
-/*
-Extra small (xs) devices (portrait phones, less than 576px)
-No media query since this is the default in Bootstrap
-
-Small (sm) devices (landscape phones, 576px and up)
-@media (min-width: 576px) { ... }
-
-Medium (md) devices (tablets, 768px and up)
-@media (min-width: 768px) { ... }
-
-Large (lg) devices (desktops, 992px and up)
-@media (min-width: 992px) { ... }
-
-Extra (xl) large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) { ... }
-*/
-
-
-
-
-
-
-
-

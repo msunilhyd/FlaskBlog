@@ -14,84 +14,72 @@
     <link rel="stylesheet" type="text/css" href=" {{ url_for('static', filename='main.css')}} " >
 
 </head>
-<body bgcolor="#E6E6FA">
+<body>
+
+	 <header class="site-header">
 
 
-	<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="/"><img src="{{ url_for('static',
-	       filename='nav/logo.png')}}"></a>
 
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarResponsive">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item-active">
-						<a class="nav-link" href="{{ url_for('home') }}">Home</a>
-					</li>
-					<li class="nav-item-active">
-						<a class="nav-link" href="{{ url_for('about') }}">About</a>
-					</li>
-					
-					{% if current_user.is_authenticated %}
+ <nav class="navbar navbar-expand-md fixed-top" style="background-color: #5a6065;">
+ 	<div class="container-fluid">
+		<a class="navbar-brand" href="/"><img src="{{ url_for('static',
+       filename='nav/logo.png')}}"></a>
 
-					<li class="nav-item-active">
-						<a class="nav-link" href="{{ url_for('new_post') }}">New post</a>
-					</li>
-					<li class="nav-item-active">
-						<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-					</li>
-					<li class="nav-item-active">
-						<a class="nav-link" href="{{ url_for('account') }}">Account</a>
-					</li>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item-active">
+					<a class="nav-link" href="{{ url_for('home') }}">Home</a>
+				</li>
+				<li class="nav-item-active">
+					<a class="nav-link" href="{{ url_for('activity') }}">Today's activity</a>
+				</li>
+				
+				{% if current_user.is_authenticated %}
 
-	            	{% else %}
-					<li class="nav-item-active">
-						<a class="nav-link" href="{{ url_for('login') }}">Login</a>
-					</li>
-					<li class="nav-item-active">
-						<a class="nav-link" href="{{ url_for('register') }}">Register</a>
-					</li>
-					{% endif %}
-					
-				</ul>
-			</div>
+				<li class="nav-item-active">
+					<a class="nav-link" href="{{ url_for('new_post') }}">New post</a>
+				</li>
+				<li class="nav-item-active">
+					<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+				</li>
+				<li class="nav-item-active">
+					<a class="nav-link" href="{{ url_for('account') }}">Account</a>
+				</li>
+
+            	{% else %}
+				<li class="nav-item-active">
+					<a class="nav-link" href="{{ url_for('login') }}">Login</a>
+				</li>
+				<li class="nav-item-active">
+					<a class="nav-link" href="{{ url_for('register') }}">Register</a>
+				</li>
+				{% endif %}
+				
+			</ul>
 		</div>
-	</nav>	      
+	</div>
+</nav>	      
+	</header>
+
 
 	   <main role="main" class="container">
 	      <div class="row">
-	        <div>
+	        <div class="col-md-8">
 	        	{% with messages = get_flashed_messages(with_categories=true) %}
 	        		{% if messages %}
 	        			{% for category, message in messages %}
-	        			
-	        			<div class="col-md-8">
-	        				<div class="alert alert-{{ category }}">
-	        					{{ message }}
-	        				</div>
+	        			<div class="alert alert-{{ category }}">
+	        				{{ message }}
 	        			</div>
-
 	        			{% endfor %}	
 	        		{% endif %}
 	        	{% endwith %}
+	          {% block content %}{% endblock %}
 	        </div>
 		</main>
-		
-		{% block content %}
-
-		{% endblock %}
-
-
-    <!-- Footer -->
-    <footer class="py-5 bg-dark">
-      <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; PickMyPic.com 2018</p>
-      </div>
-      <!-- /.container -->
-    </footer>
-
 
 	<!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

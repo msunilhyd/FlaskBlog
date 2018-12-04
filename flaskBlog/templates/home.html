@@ -1,68 +1,114 @@
-{% extends "layout.html" %}
-
-{% block content %}
 
 
-{% if current_user.is_authenticated %}
+<!DOCTYPE html>
+<html>
 
-	{% for post in posts.items %}
+<head>
+    <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <link rel="stylesheet" type="text/css" href=" {{ url_for('static', filename='main.css')}} " >
 
-		<article class="media content-section">
-			<img class="rounded-circle article-img" src="{{ url_for('static', filename = 'profile_pics/'+ post.author.image_file) }}">
-			<div class="media-body">
-				<div class="article-metadata">
-					<a class="mr-2 article-user-name" href="{{ url_for('user_posts', username=post.author.username) }}"> 
-						{{ post.author.username}}
-					</a>
-					<small class="text-muted">
-						{{ post.date_posted.strftime('%a %b %d %l:%M %p %Y') }}
-					</small>
-				</div>
-				<h2> <a class="article-title" href="{{ url_for('post', post_id=post.id) }}">
-					 	{{ post.title }}
-					 </a>
-				</h2>
-				<p class="article-content">
-					{{ post.content }}
-				</p>
-				{% if post.post_image_file %}
-					<p class="article-content">
-						<img src="{{ url_for('static', filename = 'post_pics/'+ post.post_image_file) }}" class="img-responsive" width=""600 height="500">
-					</p>
-				{% endif%}
+</head>
+<body>
 
-			</div>
-
-		</article>
-
-	{% endfor %}
-
-<div class="iterations">
-	{% for page_num in posts.iter_pages() %}
-		{% if page_num %}
-			{% if page_num == posts.page %}
-				<a class="btn btn-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
-			{% else %}
-					<a class="btn btn-outline-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>					
-			{% endif%}
-	
-		{% else %}
-		...
-		{% endif%}
-
-	{% endfor %}
-</div>
-
-{% else %}
-
-			<div class="media-body">
-				<div class="article-metadata">
-				<h2> Please Login ! </h2>
-				</div>
-			</div>
+   <header class="site-header">
 
 
-{% endif  %}
+
+ <nav class="navbar navbar-expand-md fixed-top" style="background-color: #5a6065;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/"><img src="{{ url_for('static',
+       filename='nav/logo.png')}}"></a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item-active">
+          <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+        </li>
+        <li class="nav-item-active">
+          <a class="nav-link" href="{{ url_for('activity') }}">Today's activity</a>
+        </li>
+        
+        {% if current_user.is_authenticated %}
+
+        <li class="nav-item-active">
+          <a class="nav-link" href="{{ url_for('new_post') }}">New post</a>
+        </li>
+        <li class="nav-item-active">
+          <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+        </li>
+        <li class="nav-item-active">
+          <a class="nav-link" href="{{ url_for('account') }}">Account</a>
+        </li>
+
+              {% else %}
+        <li class="nav-item-active">
+          <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+        </li>
+        <li class="nav-item-active">
+          <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+        </li>
+        {% endif %}
+        
+      </ul>
+    </div>
+  </div>
+</nav>        
+  </header>
+
+        <video autoplay muted loop id="video">
+          <source src="{{ url_for('static', filename = 'video.mp4') }}" type="video/mp4">
+              Your browser does not support HTML5 video.
+        </video>
+
+      <div class="vid_content">
+        <p>For a successful revolution it is not enough that there is discontent. 
+          <br>What is required is a profound and thorough <i>conviction</i> of the JUSTICE, 
+          <br>NECESSITY and IMPORTANCE of <b>political</b> and <b>social rights.</b><br> Dr. B. R. Ambedkar</p>
+          
+          <div class="container h-100 d-flex justify-content-center">
+            <button id="muteBtn" class="btn btn-secondary" onclick="muteMethod()">UnMute</button>
+          </div>
+      
+      </div>
 
 
-{% endblock content %}
+<script>
+var vid = document.getElementById("video");
+var muteBtn = document.getElementById("muteBtn");
+
+function muteMethod() { 
+    if(vid.muted)
+    {
+      vid.muted = false;  
+      muteBtn.innerHTML = "Mute";
+    }
+    else
+    {
+      vid.muted = true;  
+      muteBtn.innerHTML = "UnMute";     
+    }
+} 
+ 
+</script> 
+
+
+
+  <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
+

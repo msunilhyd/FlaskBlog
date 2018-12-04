@@ -11,9 +11,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route("/")
 def main():
-	page = request.args.get('page', 1, type=int)
-	posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
-	return render_template('home.html', posts=posts)
+	return render_template('index.html')
 
 @app.route("/user/<string:username>")
 def user_posts(username):	
@@ -32,9 +30,11 @@ def home():
 	return render_template('home.html', posts=posts)
 
 
-@app.route("/about")
-def about():
-    return render_template('about.html', title='About')
+@app.route("/activity")
+def activity():
+	page = request.args.get('page', 1, type=int)
+	posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+	return render_template('post_activity.html', title='Activity', posts=posts)
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -122,7 +122,6 @@ def new_post():
 	form = PostForm()
 	if form.validate_on_submit():
 		if form.picture.data:
-			print("Hello")
 			picture_file = save_post_picture(form.picture.data)
 			post = Post(title=form.title.data, content=form.content.data, author=current_user, post_image_file=picture_file)
 		else :
@@ -130,7 +129,7 @@ def new_post():
 		db.session.add(post)
 		db.session.commit()
 		flash("You post has been created", "success")
-		return redirect(url_for('home'))
+		return redirect(url_for('activity'))
 	return render_template('create_post.html', title="New Post", form=form, legend='New Post')
 
 
@@ -176,3 +175,52 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
+
+
+
+@app.route("/main", methods=['GET'])
+def mainTestFileUpload():
+	return render_template('main.html')
+
+
+@app.route("/upload", methods=["POST"])
+def upload():
+	uploaded_files = request.files.getlist("file[]")
+	upload_pictures (uploaded_files)
+	return ""
+
+
+def upload_pictures(files):
+	for x in files:
+		save_picture(x)
+	
+	return ""
+
+def save_picture(file):
+	random_hex = secrets.token_hex(8)
+	_, f_ext = os.path.splitext(file.filename)
+	picture_fn = random_hex + f_ext
+	picture_path = os.path.join(app.root_path, 'static/album_pics', picture_fn)
+	file.save(picture_path)
+
+	return picture_fn
+
+
+@app.route('/rate_movie',methods=['GET','POST'])
+def rate_movie():
+
+    # Create cursor
+    if request.method == 'POST':
+    	data = request.get_json(force=True)
+    	rating = data['rating']
+    	id = data['id']
+    	print(rating)
+    	print(id)
+    	flash('Movie Rated', 'success')
+    	return redirect(url_for('mainTestFileUpload'))
+
+
+
+@app.route("/rating", methods=['GET'])
+def rating():
+	return render_template('rating.html')
