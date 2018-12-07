@@ -28,7 +28,7 @@
 				</p>
 				{% if post.post_image_file %}
 					<p class="article-content">
-						<img src="{{ url_for('static', filename = 'post_pics/'+ post.post_image_file) }}" class="img-responsive" width=""600 height="500">
+						<img src="{{ url_for('static', filename = 'post_pics/'+ post.post_image_file) }}" class="img-responsive" width="600" height="400">
 					</p>
 				{% endif%}
 			</div>
@@ -37,7 +37,7 @@
 
 	{% endfor %}
 
-
+<div class="iterations">
 	{% for page_num in posts.iter_pages() %}
 		{% if page_num %}
 			{% if page_num == posts.page %}
@@ -51,6 +51,7 @@
 		{% endif%}
 
 	{% endfor %}
+</div>
 {% else %}
 
 			<div class="media-body">

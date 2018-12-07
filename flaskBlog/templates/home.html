@@ -20,8 +20,6 @@
 
    <header class="site-header">
 
-
-
  <nav class="navbar navbar-expand-md fixed-top" style="background-color: #5a6065;">
   <div class="container-fluid">
     <a class="navbar-brand" href="/"><img src="{{ url_for('static',
@@ -35,12 +33,10 @@
         <li class="nav-item-active">
           <a class="nav-link" href="{{ url_for('home') }}">Home</a>
         </li>
+        {% if current_user.is_authenticated %}
         <li class="nav-item-active">
           <a class="nav-link" href="{{ url_for('activity') }}">Today's activity</a>
         </li>
-        
-        {% if current_user.is_authenticated %}
-
         <li class="nav-item-active">
           <a class="nav-link" href="{{ url_for('new_post') }}">New post</a>
         </li>

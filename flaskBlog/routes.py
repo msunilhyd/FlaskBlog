@@ -25,9 +25,7 @@ def user_posts(username):
 
 @app.route("/home")
 def home():	
-	page = request.args.get('page', 1, type=int)
-	posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
-	return render_template('home.html', posts=posts)
+	return render_template('home.html')
 
 
 @app.route("/activity")
@@ -48,7 +46,7 @@ def register():
 		db.session.add(user)
 		db.session.commit()
 		flash('Your Account has been created ! You should be able to Login', 'success')
-		return redirect(url_for('home'))
+		return redirect(url_for('login'))
 	return render_template('register.html', title='Register', form=form)
 
 
@@ -73,11 +71,11 @@ def login():
 @app.route("/logout")
 def logout():
 	logout_user()
-	return redirect(url_for('home'))
+	return render_template('index.html')
 
 
 
-def save_picture(form_picture):
+def save_profile_picture(form_picture):
 	random_hex = secrets.token_hex(8)
 	_, f_ext = os.path.splitext(form_picture.filename)
 	picture_fn = random_hex + f_ext
@@ -93,7 +91,7 @@ def account():
 	form = UpdateAccountForm()
 	if form.validate_on_submit():
 		if form.picture.data:
-			picture_file = save_picture(form.picture.data)
+			picture_file = save_profile_picture(form.picture.data)
 			current_user.image_file = picture_file
 		current_user.username = form.username.data
 		current_user.email = form.email.data
@@ -174,7 +172,7 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
     flash('Your post has been deleted!', 'success')
-    return redirect(url_for('home'))
+    return redirect(url_for('activity'))
 
 
 
@@ -192,11 +190,11 @@ def upload():
 
 def upload_pictures(files):
 	for x in files:
-		save_picture(x)
+		save_album_picture(x)
 	
 	return ""
 
-def save_picture(file):
+def save_album_picture(file):
 	random_hex = secrets.token_hex(8)
 	_, f_ext = os.path.splitext(file.filename)
 	picture_fn = random_hex + f_ext
