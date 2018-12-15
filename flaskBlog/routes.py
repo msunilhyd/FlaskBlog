@@ -1,7 +1,7 @@
 import os
 import secrets
-from flask import render_template, url_for, flash, redirect, request, abort
-from flaskBlog import app, db, bcrypt
+from flask import render_template, url_for, flash, redirect, request, abort,jsonify, json
+from flaskBlog import app, db, bcrypt, mysql
 from flaskBlog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from flaskBlog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
@@ -30,9 +30,11 @@ def home():
 
 @app.route("/activity")
 def activity():
-	page = request.args.get('page', 1, type=int)
-	posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
-	return render_template('post_activity.html', title='Activity', posts=posts)
+	#page = request.args.get('page', 1, type=int)
+	#posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+	#print("called today's activity");
+	#return render_template('post_activity.html', title='Activity', posts=posts)
+	return render_template('quiz2Exp.html', title='quiz2Exp')
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -54,7 +56,7 @@ def register():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
 	if current_user.is_authenticated:
-		return redirect(url_for('home'))
+		return render_template('quiz2Exp.html', title='Register')
 	form = LoginForm()
 	if form.validate_on_submit():
 		user = User.query.filter_by(email=form.email.data).first()
@@ -219,6 +221,11 @@ def rate_movie():
 
 
 
-@app.route("/rating", methods=['GET'])
-def rating():
-	return render_template('rating.html')
+@app.route("/tests", methods=['GET'])
+def tests():
+        cur = mysql.connect().cursor()
+        cur.execute('''SELECT friendname FROM friends''')
+        rv = cur.fetchall()
+        ans = jsonify(rv)
+        print("ans is :  " + str(ans))
+        return jsonify(rv)
