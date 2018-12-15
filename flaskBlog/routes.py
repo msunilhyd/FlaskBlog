@@ -1,11 +1,11 @@
 import os
 import secrets
-from flask import render_template, url_for, flash, redirect, request, abort,jsonify, json
+from flask import render_template, url_for, flash, redirect, json,request, abort,jsonify, json
 from flaskBlog import app, db, bcrypt, mysql
 from flaskBlog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from flaskBlog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
-
+from flask_json import FlaskJSON, JsonError, json_response, as_json
 
 
 
@@ -219,13 +219,71 @@ def rate_movie():
     	flash('Movie Rated', 'success')
     	return redirect(url_for('mainTestFileUpload'))
 
+myQuestions = [
+    {
+      "question": "Who is the strongest?",
+        "a": "Superman",
+        "b": "The Terminator",
+        "c": "Waluigi, obviously",
+        "d": "Sunil and Jujju"  
+    },
+    {
+      "question": "What is the best site ever created?",
+        "a": "SitePoint",
+        "b": "Simple Steps Code",
+        "c": "Trick question; they're both the best", 
+        "d": "Our JEE Quiz site"  
+
+    },
+    {
+      "question": "Where is Waldo really?",
+        "a": "Antarctica",
+        "b": "Exploring the Pacific Ocean",
+        "c": "Sitting in a tree",
+        "d": "Minding his own business, so stop asking"
+    }
+  ];
 
 
-@app.route("/tests", methods=['GET'])
+@app.route("/alltests", methods=['GET'])
+def all_tests():
+	return render_template('alltests.html')
+
+
+@app.route("/teststests_bkp/", methods=['GET','POST'])
 def tests():
         cur = mysql.connect().cursor()
-        cur.execute('''SELECT friendname FROM friends''')
+        cur.execute('''SELECT json_object('question', question, 'a', a, 'b', b, 'c', c, 'd', d, 'ans', ans)
+FROM questions;
+''')
         rv = cur.fetchall()
-        ans = jsonify(rv)
-        print("ans is :  " + str(ans))
         return jsonify(rv)
+
+@app.route("/tests/", methods=['GET','POST'])
+def tests_bkp():
+	print("Hey")
+	cur = mysql.connect().cursor()
+	cur.execute('''SELECT question,a,b,c,d,ans FROM questions''')
+	rv = cur.fetchall()
+	empList = []
+	for emp in rv:
+		print("Hello");
+		print(emp[0]);
+		empDict = {
+		'question': emp[0],
+		'a': emp[1],
+		'b': emp[2],
+		'c': emp[3],
+		'd': emp[3],
+		'ans': emp[4]}
+		empList.append(empDict)
+	return json.dumps(empList)
+
+
+
+
+
+@app.route('/getQuestions/',methods=['GET','POST'])
+def getQuestions():
+	questions =  myQuestions
+	return jsonify(qns=myQuestions)

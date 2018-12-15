@@ -1,5 +1,6 @@
 <head>
       <link rel="stylesheet" type="text/css" href=" {{ url_for('static', filename='styles.css')}} " >
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </head>
 
 <h1>Quiz on Important Facts</h1>
@@ -27,27 +28,6 @@
 <script type="text/javascript">
 	
 	(function() {
-  const myQuestions = [
-    {
-      question: "Who is the strongest?",
-        a: "Superman",
-        b: "The Terminator",
-        c: "Waluigi, obviously"
-    },
-    {
-      question: "What is the best site ever created?",
-        a: "SitePoint",
-        b: "Simple Steps Code",
-        c: "Trick question; they're both the best"
-    },
-    {
-      question: "Where is Waldo really?",
-        a: "Antarctica",
-        b: "Exploring the Pacific Ocean",
-        c: "Sitting in a tree",
-        d: "Minding his own business, so stop asking"
-    }
-  ];
   const myAnswers = [
     {
       question: "Who is the strongest?",
@@ -63,10 +43,43 @@
     }
   ];
   function buildQuiz() {
-    // we'll need a place to store the HTML output
+    var nxt;
+    console.log('buildQuiz Called');
+    var nextSectionId = "";
+        $.ajax({
+            url: "/getQuestions/",
+            type: "POST",
+            data: { "sectionId": nextSectionId },
+            success: function(data) {
+                showQuestions(data);
+            },
+            error: function(data) {
+                alert("Error getting questions from server");
+            }
+        });
+  }
+
+
+  function showQuestions(data)
+  {
+    var myQuestions = [];
+        // we'll need a place to store the HTML output
     const output = [];
+
+    myQuestions = JSON.stringify(data.qns);
+
+var s = JSON.stringify(data.qns);
+myQuestions = eval('(' + s + ')');
+// for (i in myQuestions)
+// {
+//    console.log(myQuestions[i]);
+// }
+
     // for each question...
     myQuestions.forEach((currentQuestion, questionNumber) => {
+      
+      console.log("Printing currentQuestion below");
+      console.log(currentQuestion);
       // we'll want to store the list of answer choices
       const answers = [];
       // and for each available answer...
@@ -93,10 +106,15 @@
     // finally combine our output list into one string of HTML and put it on the page
     quizContainer.innerHTML = output.join("");
   }
+
+
   function showResults() {
     // gather answer containers from our quiz
     var x = document.getElementById('count');
     x.style.display = "none";
+        var submitted = document.getElementById('submit');
+        submitted.style.display = "none";
+
     const answerContainers = quizContainer.querySelectorAll(".answers");
     // keep track of user's answers
     let numCorrect = 0;
@@ -114,7 +132,8 @@
           // add to the number of correct answers
           numCorrect++;
           // color the answers green
-          answerContainers[questionNumber].style.color = "lightgreen";
+          answerContainers[questionNumber].userAnswer.style.color = "green";
+        
         } else {
           // if answer is wrong or blank
           // color the answers red
@@ -159,7 +178,7 @@
   const nextButton = document.getElementById("next");
   const slides = document.querySelectorAll(".slide");
   let currentSlide = 0;
-  showSlide(0);
+  //showSlide(0);
   // on submit, show results
   submitButton.addEventListener("click", showResults);
   previousButton.addEventListener("click", showPreviousSlide);
@@ -179,3 +198,4 @@
     }, 1000);
 })();
 </script>
+<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
