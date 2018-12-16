@@ -18,6 +18,9 @@
 
   const quizContainer = document.getElementById("quiz");
 
+  console.log("quizContainer is ");
+
+
   // display quiz right away
   buildQuiz();
 
@@ -30,17 +33,13 @@
   previousButton.addEventListener("click", showPreviousSlide);
   nextButton.addEventListener("click", showNextSlide);
 
-      // on submit, show results
+  // on submit, show results
   submitButton.addEventListener("click", showResults);
 
   let currentSlide = 0;
-  showSlide(0);
-
 
   function buildQuiz() {
     console.log('buildQuiz Called');
-    console.log('Test');
-    
     var nextSectionId = "";
         $.ajax({
             url: "/tests/",
@@ -50,7 +49,9 @@
         console.log("Printing response data.");
         console.log(data);
             let parsedData = JSON.parse(data);
-                showQuestions(parsedData);
+               showQuestions(parsedData);
+               //  $.when(showQuestions(parsedData))
+              //     .then(showSlide(0));
             },
             error: function(data) {
                 alert("Error getting questions from server");
@@ -95,12 +96,8 @@
       );
     });
 
-
     // finally combine our output list into one string of HTML and put it on the page
     quizContainer.innerHTML = output.join("");
-
-    console.log("slides[currentSlide].classList is as below");
-    console.log(slides[currentSlide].classList);
   }
 
   function showResults() {
@@ -137,11 +134,8 @@
 }
 
  function showSlide(n) {
-  console.log("showSlide() called");
-
-    console.log("slides[currentSlide] is ");
-    console.log(slides[currentSlide].classList);
-
+      console.log('showSlide() Called');
+      console.log(quizContainer.innerHTML);
     slides[currentSlide].classList.remove("active-slide");
     slides[n].classList.add("active-slide");
     currentSlide = n;
