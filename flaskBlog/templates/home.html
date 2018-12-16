@@ -5,7 +5,7 @@
 
 {% if current_user.is_authenticated %}
 
-	{% for post in posts.items %}
+	{% for post in posts %}
 
 		<article class="media content-section">
 			<img class="rounded-circle article-img" src="{{ url_for('static', filename = 'profile_pics/'+ post.author.image_file) }}">
@@ -37,21 +37,6 @@
 
 	{% endfor %}
 
-<div class="iterations">
-	{% for page_num in posts.iter_pages() %}
-		{% if page_num %}
-			{% if page_num == posts.page %}
-				<a class="btn btn-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
-			{% else %}
-					<a class="btn btn-outline-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>					
-			{% endif%}
-	
-		{% else %}
-		...
-		{% endif%}
-
-	{% endfor %}
-</div>
 
 {% else %}
 
