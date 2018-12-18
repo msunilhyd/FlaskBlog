@@ -67,8 +67,7 @@
 	</header>
 
 
-	   <main role="main" class="container">
-	      <div class="row">
+	 
 	        <div class="col-md-8">
 	        	{% with messages = get_flashed_messages(with_categories=true) %}
 	        		{% if messages %}
@@ -81,7 +80,7 @@
 	        	{% endwith %}
 	          {% block content %}{% endblock %}
 	        </div>
-		</main>
+
 
 	<!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

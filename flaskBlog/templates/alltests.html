@@ -1,4 +1,13 @@
-<h1>Quiz on Important Facts</h1>
+
+
+
+{% extends "layout.html" %}
+
+
+
+
+{% block content %}
+<h1>Sample Quiz</h1>
 <div class="quiz-container">
   <div id="quiz"></div>
 </div>
@@ -15,7 +24,7 @@
 
 <script type="text/javascript">
 
-
+  (function() {
   const quizContainer = document.getElementById("quiz");
 
   // display quiz right away
@@ -34,7 +43,7 @@
   submitButton.addEventListener("click", showResults);
 
   let currentSlide = 0;
-  showSlide(0);
+ // showSlide(0);
 
 
   function buildQuiz() {
@@ -44,13 +53,14 @@
     var nextSectionId = "";
         $.ajax({
             url: "/tests/",
-            type: "POST",
+            type: "GET",
             data: { "sectionId": nextSectionId },
             success: function(data) {
         console.log("Printing response data.");
         console.log(data);
             let parsedData = JSON.parse(data);
                 showQuestions(parsedData);
+                  showSlide(0);
             },
             error: function(data) {
                 alert("Error getting questions from server");
@@ -72,18 +82,17 @@
       const answers = [];
 
       // and for each available answer...
-      for (letter in currentQuestion) {
+      for (letter in currentQuestion.answers) {
 
-        if(letter != 'question'){
         // ...add an HTML radio button
         answers.push(
           `<label>
              <input type="radio" name="question${questionNumber}" value="${letter}">
               ${letter} :
-              ${currentQuestion[letter]}
+              ${currentQuestion.answers[letter]}
            </label>`
         );
-      }
+      
       }
       
       // add this question and its answers to the output
@@ -99,8 +108,29 @@
     // finally combine our output list into one string of HTML and put it on the page
     quizContainer.innerHTML = output.join("");
 
-    console.log("slides[currentSlide].classList is as below");
-    console.log(slides[currentSlide].classList);
+  }
+
+
+
+  function submitQuiz() {
+    console.log('submitQuiz Called');
+    
+    var nextSectionId = "";
+        $.ajax({
+            url: "/tests/",
+            type: "GET",
+            data: { "sectionId": nextSectionId },
+            success: function(data) {
+        console.log("Printing response data.");
+        console.log(data);
+            let parsedData = JSON.parse(data);
+                showQuestions(parsedData);
+                  showSlide(0);
+            },
+            error: function(data) {
+                alert("Error getting questions from server");
+            }
+        });  
   }
 
   function showResults() {
@@ -138,10 +168,7 @@
 
  function showSlide(n) {
   console.log("showSlide() called");
-
-    console.log("slides[currentSlide] is ");
-    console.log(slides[currentSlide].classList);
-
+  const slides = document.querySelectorAll(".slide");
     slides[currentSlide].classList.remove("active-slide");
     slides[n].classList.add("active-slide");
     currentSlide = n;
@@ -169,4 +196,9 @@
     showSlide(currentSlide - 1);
   }
 
+  })();
+
+
 </script>
+
+{% endblock content %}

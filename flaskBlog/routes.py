@@ -251,7 +251,7 @@ def all_tests():
 
 
 @app.route("/teststests_bkp/", methods=['GET','POST'])
-def tests():
+def tests_bkp():
         cur = mysql.connect().cursor()
         cur.execute('''SELECT json_object('question', question, 'a', a, 'b', b, 'c', c, 'd', d, 'ans', ans)
 FROM questions;
@@ -259,8 +259,8 @@ FROM questions;
         rv = cur.fetchall()
         return jsonify(rv)
 
-@app.route("/tests/", methods=['GET','POST'])
-def tests_bkp():
+@app.route("/tests/", methods=['GET'])
+def tests():
 	print("Hey")
 	cur = mysql.connect().cursor()
 	cur.execute('''SELECT question,a,b,c,d,ans FROM questions''')
@@ -271,11 +271,33 @@ def tests_bkp():
 		print(emp[0]);
 		empDict = {
 		'question': emp[0],
+		'answers':{
 		'a': emp[1],
 		'b': emp[2],
 		'c': emp[3],
-		'd': emp[3],
-		'ans': emp[4]}
+		'd': emp[4]
+		},
+		'ans': emp[5]
+		}
+		empList.append(empDict)
+	return json.dumps(empList)
+
+
+
+@app.route("/getAnswers/", methods=['GET'])
+def getAnswers():
+	print("Hey")
+	cur = mysql.connect().cursor()
+	cur.execute('''SELECT question,ans FROM questions''')
+	rv = cur.fetchall()
+	empList = []
+	for emp in rv:
+		print("Hello");
+		print(emp[0]);
+		empDict = {
+		'question': emp[0],
+		'correctAnswer': emp[5]
+		}
 		empList.append(empDict)
 	return json.dumps(empList)
 

@@ -36,6 +36,10 @@ GRANT ALL PRIVILEGES ON kumardb.* TO 'kumaruser'@'localhost';
 );
 
 
+
+ALTER TABLE questions MODIFY COLUMN question VARCHAR(300);
+
+
     insert into questions(question,a,b,c,d,ans)
      values('question : Who is the king of the jungle', 'a:lion', 'b:sunil','c:tiger','d:deer', 'correctAnswer : a');
     insert into questions(question,a,b,c,d,ans)
@@ -48,3 +52,91 @@ GRANT ALL PRIVILEGES ON kumardb.* TO 'kumaruser'@'localhost';
     insert into questions(question,a,b,c,d,ans)
      values('Which is the most populous city in the world',
       'Delhi', 'Tokyo','Mumbai','Hyderabad', 'b');
+
+
+    insert into questions(question,a,b,c,d,ans)
+     values('Who is the Coolest Front end Developer', 'Sunil', 'Zakir','Ravi','Me', 'b');
+
+     insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('My name is ?', 'Linus', 'Sunil','Yashkp','Sudheer', 'b');
+
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Collest HeadPhone', 'AlTech Lansing', 'Sony','Apple','Bose', 'b');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Greatest Investors', 'Bill Gates', 'Accel Partners','Yahoo','Warren Buffet', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best programmer you have ever met', 'Varsh', 'Ranga','Tomar','Azhar', 'c');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Who is the Greatest Leader in the world', 'Matrin Luther Jr', 'Dr. B.R.Ambedkar',
+      'Nelson Mandela','KCR', 'b');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Coolest Music Director', 'Harris Jayaraj', 'Anirudh','A.R.Rahman','Deva', 'a');
+
+        200 line question  insert into questions(question,a,b,c,d,ans)
+     values('And there were people who talk of Philosophyforgetting the main thing, that the practice is more important than the talking, and they never realise that the hypocrisy is the matte that makes the difference for the whole practical world of importance and nevertheless the Tigers in the dwindling population is a big concern for the animal lovers and the governments and there of for the PETA. Hail Karl Marx', 'Pilla Raa', 'Dil Bhar','Newyork Nagaram','Kothaga', 'c');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+
+          insert into questions(question,a,b,c,d,ans)
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
