@@ -1,0 +1,23 @@
+pip install flask
+pip install flask_sqlalchemy
+pip install sqlalchemy
+pip install flask-bcrypt
+pip install flask_login
+pip install PyMySQL
+pip install flask-wtf
+
+
+sudo apt-get install python3-pymysql
+
+
+
+
+My-Sql Ubuntu = https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/
+
+UPDATE mysql.user SET Password = PASSWORD(kumar) WHERE User = 'root';
+update user set authentication_string=password('kumar') where user='root';
+
+INSERT INTO mysql.user (User,Host,authentication_string,ssl_cipher,x509_issuer,x509_subject)
+VALUES('demouser','localhost',PASSWORD('demopassword'),'','','');
+
+
