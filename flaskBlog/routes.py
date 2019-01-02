@@ -247,7 +247,7 @@ myQuestions = [
 
 @app.route("/alltests", methods=['GET'])
 def all_tests():
-	return render_template('alltests.html')
+	return render_template('new_tests.html')
 
 
 @app.route("/teststests_bkp/", methods=['GET','POST'])
@@ -266,19 +266,21 @@ def tests():
 	cur.execute('''SELECT question,a,b,c,d,ans FROM questions''')
 	rv = cur.fetchall()
 	empList = []
+	choices = []
 	for emp in rv:
 		print("Hello");
 		print(emp[0]);
+		choices.append(emp[1]);
+		choices.append(emp[2]);
+		choices.append(emp[3]);
+		choices.append(emp[4]);
+		
 		empDict = {
 		'question': emp[0],
-		'answers':{
-		'a': emp[1],
-		'b': emp[2],
-		'c': emp[3],
-		'd': emp[4]
-		},
-		'ans': emp[5]
+		'choices' : choices,
+		'correctAnswer': emp[5]
 		}
+		choices = []
 		empList.append(empDict)
 	return json.dumps(empList)
 

@@ -8,10 +8,10 @@ from flask_json import FlaskJSON, JsonError, json_response
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'MY_SECRET_KEY'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8mb4'.format('kumaruser', 'kumar', 'localhost', 3306, 'kumardb')
-app.config['MYSQL_DATABASE_USER'] = 'kumaruser';
-app.config['MYSQL_DATABASE_PASSWORD'] = 'kumar';
-app.config['MYSQL_DATABASE_DB'] = 'kumardb';
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8mb4'.format('demouser', 'demopassword', 'localhost', 3306, 'demodb')
+app.config['MYSQL_DATABASE_USER'] = 'demouser';
+app.config['MYSQL_DATABASE_PASSWORD'] = 'demopassword';
+app.config['MYSQL_DATABASE_DB'] = 'demodb';
 app.config['MYSQL_DATABASE_HOST'] = 'localhost';
 
 app.config['JSON_ADD_STATUS'] = False

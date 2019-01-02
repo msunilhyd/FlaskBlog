@@ -27,7 +27,7 @@ GRANT ALL PRIVILEGES ON kumardb.* TO 'kumaruser'@'localhost';
     CREATE TABLE questions
 (
   questionid int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  question VARCHAR(100) NOT NULL,
+  question VARCHAR(300) NOT NULL,
   a VARCHAR(100) NOT NULL,
   b VARCHAR(100) NOT NULL,
   c VARCHAR(100) NOT NULL,
@@ -55,30 +55,30 @@ ALTER TABLE questions MODIFY COLUMN question VARCHAR(300);
 
 
     insert into questions(question,a,b,c,d,ans)
-     values('Who is the Coolest Front end Developer', 'Sunil', 'Zakir','Ravi','Me', 'b');
+     values('Who is the Coolest Front end Developer', 'Sunil', 'Zakir','Ravi','Me', 'Zakir');
 
      insert into questions(question,a,b,c,d,ans)
-     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+     values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'Sudheer');
 
           insert into questions(question,a,b,c,d,ans)
-     values('My name is ?', 'Linus', 'Sunil','Yashkp','Sudheer', 'b');
+     values('My name is ?', 'Linus', 'Sunil','Yashkp','Sudheer', 'Linus');
 
 
           insert into questions(question,a,b,c,d,ans)
-     values('Collest HeadPhone', 'AlTech Lansing', 'Sony','Apple','Bose', 'b');
+     values('Collest HeadPhone', 'AlTech Lansing', 'Sony','Apple','Bose', 'Sony');
 
           insert into questions(question,a,b,c,d,ans)
-     values('Greatest Investors', 'Bill Gates', 'Accel Partners','Yahoo','Warren Buffet', 'd');
+     values('Greatest Investors', 'Bill Gates', 'Accel Partners','Yahoo','Warren Buffet', 'Warren Buffet');
 
           insert into questions(question,a,b,c,d,ans)
-     values('Best programmer you have ever met', 'Varsh', 'Ranga','Tomar','Azhar', 'c');
+     values('Best programmer you have ever met', 'Varsh', 'Ranga','Tomar','Azhar', 'Tomar');
 
           insert into questions(question,a,b,c,d,ans)
      values('Who is the Greatest Leader in the world', 'Matrin Luther Jr', 'Dr. B.R.Ambedkar',
-      'Nelson Mandela','KCR', 'b');
+      'Nelson Mandela','KCR', 'Dr. B.R.Ambedkar');
 
           insert into questions(question,a,b,c,d,ans)
-     values('Coolest Music Director', 'Harris Jayaraj', 'Anirudh','A.R.Rahman','Deva', 'a');
+     values('Coolest Music Director', 'Harris Jayaraj', 'Anirudh','A.R.Rahman','Deva', 'Anirudh');
 
         200 line question  insert into questions(question,a,b,c,d,ans)
      values('And there were people who talk of Philosophyforgetting the main thing, that the practice is more important than the talking, and they never realise that the hypocrisy is the matte that makes the difference for the whole practical world of importance and nevertheless the Tigers in the dwindling population is a big concern for the animal lovers and the governments and there of for the PETA. Hail Karl Marx', 'Pilla Raa', 'Dil Bhar','Newyork Nagaram','Kothaga', 'c');

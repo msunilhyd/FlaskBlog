@@ -1,0 +1,34 @@
+
+{% extends "layout.html" %}
+
+
+
+
+{% block content %}
+<h1>Index Page of all the links</h1>
+	<head>
+		<title>Dynamic Quiz Project</title>
+		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open Sans"/>
+		<link rel="text/css" type="text/css" href=" {{ url_for('static', filename='stylesheet.css')}} " >
+	</head>
+		<div id='container'>
+			<div id='title'>
+				<h1>Project #1 - Dynamic Mock Quiz</h1>
+			</div>
+   			<br/>
+  			<div id='quiz' ></div>
+  			<div class='button' id='prev'><a href='#'>Prev</a></div>
+    		<div class='button' id='next'><a href='#'>Next</a></div>
+    		<div class='sumit_button' id='submitQuiz'><a href='#'>Submit</a></div>
+    		<!-- <button class='' id='next'>Next</a></button>
+    		<button class='' id='prev'>Prev</a></button>
+    		<button class='' id='start'> Start Over</a></button> -->
+    	</div>
+
+		<script type='text/javascript' src='{{ url_for('static', filename='js/jsquiz.js')}}'></script>
+		<script type='text/javascript' src='{{ url_for('static', filename='js/jquery.min.js')}}'></script>
+		<script type='text/javascript' src='{{ url_for('static', filename='js/popper.min.js')}}'></script>
+
+
+
+{% endblock content %}
