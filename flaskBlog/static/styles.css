@@ -22,7 +22,7 @@ h1{
 .answers {
   margin-bottom: 20px;
   text-align: left;
-  display: inline-block;
+  display: inline-block;  
 }
 .answers label{
   display: block;

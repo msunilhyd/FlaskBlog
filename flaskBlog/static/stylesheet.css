@@ -6,6 +6,10 @@ h1 {
     text-align: center;
 }
 
+p {
+    font-size: 1.5rem;
+}
+
 #title {
     text-decoration: underline;
 }
@@ -90,4 +94,13 @@ ul {
 #submitQuiz{
     display:none;
 	width: auto;
+}
+
+input[type="radio"]{
+  margin: 0 5px 0 10px;
+  font-size: 1rem;    
+}
+
+.radioClass{
+  font-size: 1.5rem;    
 }

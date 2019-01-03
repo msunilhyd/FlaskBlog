@@ -74,7 +74,7 @@
     var input = '';
     for (var i = 0; i < questions[index].choices.length; i++) {
       item = $('<li>');
-      input = '<input type="radio" name="answer" value=' + i + ' />';
+      input = '<input type="radio" name="answer" class="radioClass" value=' + i + ' />';
       input += questions[index].choices[i];
       item.append(input);
       radioList.append(item);
