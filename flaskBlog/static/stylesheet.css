@@ -60,7 +60,7 @@ button {
     float:left;
 }
 
-.button a, sumit_button {
+.button a, submitQuiz {
     text-decoration: none;
     color: black;
 }
@@ -101,13 +101,21 @@ ul {
 }
 
 input[type="radio"]{
-  margin: 0 5px 0 10px;
-  font-size: 0.7rem; 
-    width: 3%;
+    margin: 0 -4px 0 10px;
+    font-size: 0.7rem; 
+    width: 2%;
     height: 2em;   
 }
 
 
 .radioClass{
   font-size: 1.5rem;    
+}
+
+
+label {
+    display: inline-block;
+    margin-bottom: .5rem;
+    font-size: 20px;
+    cursor: pointer;
 }

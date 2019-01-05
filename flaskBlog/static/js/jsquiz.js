@@ -21,7 +21,7 @@
      $('#startQuiz').hide();
 
      getQuestions();
-     var t =  20;
+     var t =  80;
 
         function secondsToTime(secs)
         {
@@ -141,8 +141,9 @@
     var input = '';
     for (var i = 0; i < questions[index].choices.length; i++) {
       item = $('<li>');
-      input = '<input type="radio" name="answer" class="radioClass" value=' + i + ' />';
-      input += questions[index].choices[i];
+      input = '<input type="radio" name="answer" class="radioClass" id=' + i + ' value=' + i + ' />';
+      input += '<label for=' + i + '>' + questions[index].choices[i] + '</label>';
+
       item.append(input);
       radioList.append(item);
     }
@@ -254,7 +255,8 @@ function getQuestions(){
                  questions.length );
     var x = document.getElementById('submitQuiz');
     x.style.display = "none";
-    
+    $('#next').hide();
+
     return score;
   }
 
