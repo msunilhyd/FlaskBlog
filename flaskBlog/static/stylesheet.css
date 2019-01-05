@@ -30,7 +30,8 @@ p {
     background-color: #DCDCDC;
     color: blue;
     margin: 12px 2px 0 2px;
-	left: 1%
+	left: 1%;
+    cursor: pointer;
 }
 
 .button.active {
@@ -38,7 +39,7 @@ p {
     color: #525252;
 }
 
-.sumit_button{
+.submitQuiz{
     border:4px solid;
     border-radius:5px;
     width: 40px;
@@ -50,6 +51,7 @@ p {
     color: lightseagreen;
     margin: 12px 2px 0 2px;
 	text-decoration:none;
+    cursor: pointer;
 }
 
 
@@ -75,6 +77,8 @@ button {
     box-shadow: 5px 5px 5px #888;
 }
 
+.container .timerCount { float:right }
+
 ul {
     list-style-type: none;
     padding: 0;
@@ -98,7 +102,9 @@ ul {
 
 input[type="radio"]{
   margin: 0 5px 0 10px;
-  font-size: 1rem;    
+  font-size: 0.7rem; 
+    width: 3%;
+    height: 2em;   
 }
 
 

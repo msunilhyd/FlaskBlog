@@ -4,13 +4,80 @@
   var questionCounter = 0; //Tracks question number
   var selections = []; //Array containing user choices
   var quiz = $('#quiz'); //Quiz div object
+  var isSubmit = 0;
   
   // Display initial question
   //displayNext();
   
   // Build Quiz
  // buildQuiz();
- getQuestions();
+ console.log("is this the first");
+ $('#next').hide();
+ $('#count').hide();
+
+
+  // Click handler for the 'startQuiz' button
+  $('#startQuiz').on('click', function (e) {
+     $('#startQuiz').hide();
+
+     getQuestions();
+     var t =  20;
+
+        function secondsToTime(secs)
+        {
+            var hours = Math.floor(secs / (60 * 60));
+           
+            var divisor_for_minutes = secs % (60 * 60);
+            var minutes = Math.floor(divisor_for_minutes / 60);
+         
+            var divisor_for_seconds = divisor_for_minutes % 60;
+            var seconds = Math.ceil(divisor_for_seconds);
+           
+            var obj = {
+                "h": hours,
+                "m": minutes,
+                "s": seconds
+            };
+            return  hours  + " hours " + minutes + " minutes " + seconds + " seconds";
+
+        }
+
+        console.log(secondsToTime(170 * 60))
+
+        function timer(count,str) {
+          console.log("called");
+              count--;
+              if(count!= 0 && count < 600){
+                str = str + "<div id='remain' style='display:block'>Last 10 minutes remaining</div>."
+              }
+              else if(count === 0){
+                clearInterval(interval);
+                var scoreElem = $('<p>',{id: 'timeUp'});
+                scoreElem.append('Time up. Submitting the quiz Hey');
+                quiz.append(scoreElem);
+                $('#submitQuiz').click();
+                var x = document.getElementById('submitQuiz');
+                x.style.display = "none";
+              }
+              document.getElementById('timerCount').innerHTML=str;
+
+          // body...
+        }
+            
+            var interval = setInterval(function(){
+              if(isSubmit === 1)
+              {
+                document.getElementById('timerCount').innerHTML='';
+                return;
+              }
+            
+              timer(t,secondsToTime(t--));
+            }, 1000);
+
+            timer(t,secondsToTime(t));
+            
+  });
+
   // Click handler for the 'next' button
   $('#next').on('click', function (e) {
     e.preventDefault();
@@ -147,19 +214,24 @@ function getQuestions(){
     });
   }
 
-    // Click handler for the 'prev' button
+    // Click handler for the 'submitQuiz' button
   $('#submitQuiz').on('click', function (e) {
         console.log("Diff String called");
+        isSubmit = 1;
+        $('#timerCount').hide();
         $('#prev').hide();
         var scoreElem = displayScore();
         quiz.append(scoreElem).fadeIn();
   });
+
   
   // Computes score and returns a paragraph element to be displayed
   function displayScore() {
     
+    $('#question').hide();
+
     console.log("displayScore calling");
-    var score = $('<p>',{id: 'question'});
+    var score = $('<p>',{id: 'score'});
     
     console.log("selections is : " + selections);
     var numCorrect = 0;
@@ -178,10 +250,15 @@ function getQuestions(){
         console.log("Correct Answer");
       }
     }
-    score.append('Score :-  ' + numCorrect + ' / ' +
+    score.append('Your Score :-  ' + numCorrect + ' / ' +
                  questions.length );
-    $('#submitQuiz').hide();
+    var x = document.getElementById('submitQuiz');
+    x.style.display = "none";
+    
     return score;
   }
+
+
+
 
 })();

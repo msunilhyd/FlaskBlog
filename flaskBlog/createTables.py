@@ -37,7 +37,7 @@ GRANT ALL PRIVILEGES ON kumardb.* TO 'kumaruser'@'localhost';
 
 
 
-ALTER TABLE questions MODIFY COLUMN question VARCHAR(300);
+ALTER TABLE questions MODIFY COLUMN question VARCHAR(1000);
 
 
     insert into questions(question,a,b,c,d,ans)

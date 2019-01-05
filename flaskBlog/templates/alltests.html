@@ -52,13 +52,13 @@
     
     var nextSectionId = "";
         $.ajax({
-            url: "/tests/",
+            url: "/getQuestions/",
             type: "GET",
             data: { "sectionId": nextSectionId },
             success: function(data) {
         console.log("Printing response data.");
         console.log(data);
-            let parsedData = JSON.parse(data);
+            let parsedData = data;
                 showQuestions(parsedData);
                   showSlide(0);
             },
