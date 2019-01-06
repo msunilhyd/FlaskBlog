@@ -2,8 +2,8 @@ import os
 import secrets
 from flask import render_template, url_for, flash, redirect, json,request, abort,jsonify, json
 from flaskBlog import app, db, bcrypt, mysql
-from flaskBlog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
-from flaskBlog.models import User, Post
+from flaskBlog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, TestForm
+from flaskBlog.models import User, Post, Test
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 
@@ -26,16 +26,6 @@ def user_posts(username):
 @app.route("/home")
 def home():	
 	return render_template('home.html')
-
-
-@app.route("/activity")
-def activity():
-	#page = request.args.get('page', 1, type=int)
-	#posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
-	#print("called today's activity");
-	#return render_template('post_activity.html', title='Activity', posts=posts)
-	return render_template('quiz2Exp.html', title='quiz2Exp')
-
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -131,6 +121,19 @@ def new_post():
 		flash("You post has been created", "success")
 		return redirect(url_for('activity'))
 	return render_template('create_post.html', title="New Post", form=form, legend='New Post')
+
+
+@app.route("/test/new", methods=['GET', 'POST'])
+@login_required
+def new_test():
+	form = TestForm()
+	if form.validate_on_submit():
+		test = Test(test_name=form.test_name.data, category=form.category.data, no_of_questions=form.no_of_questions.data, total_marks=form.total_marks.data, author=current_user)
+		db.session.add(test)
+		db.session.commit()
+		flash("You post has been created", "success")
+		return redirect(url_for('home'))
+	return render_template('create_test.html', title="New Test", form=form, legend='New test')
 
 
 @app.route("/post/<int:post_id>")

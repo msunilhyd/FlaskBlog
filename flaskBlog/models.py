@@ -16,6 +16,7 @@ class User(db.Model, UserMixin):
 	email = db.Column(db.String(20), unique=True, nullable=False)	
 	image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
 	password = db.Column(db.String(60), nullable=False)
+	tests = db.relationship('Test', backref='author', lazy=True)
 	
 	def get_id(self):
 		return (self.id)
@@ -29,9 +30,20 @@ class Post(db.Model):
 	date_posted = db.Column(db.DateTime(timezone=True), nullable=False, default=datetime.now)	
 	content = db.Column(db.Text, nullable=False)
 	post_image_file = db.Column(db.String(30))	
-	user_id = db.Column(db.Integer, db.ForeignKey('user.userid'), nullable=False)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 	def __repr__(self):
 		return "Post('{}','{}''{}')".format(self.title, self.date_posted, self.user_id)
 
 
+class Test(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	test_name = db.Column(db.String(30), nullable=False)
+	category = db.Column(db.String(30))
+	no_of_questions = db.Column(db.Integer, nullable=False)
+	total_marks = db.Column(db.Integer, nullable=False)
+	date_posted = db.Column(db.DateTime(timezone=True), nullable=False, default=datetime.now)	
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+	def __repr__(self):
+		return "Post('{}','{}''{}')".format(self.test_name, self.category, self.no_of_questions, self.user_id)

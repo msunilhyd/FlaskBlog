@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, BooleanField, PasswordField, SubmitField, TextAreaField
+from wtforms import StringField, BooleanField, PasswordField, SubmitField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flaskBlog.models import User
 from flask_login import current_user
@@ -71,3 +71,12 @@ class PostForm(FlaskForm):
 	content = TextAreaField('Content', validators=[DataRequired()])
 	picture = FileField('Upload Post Picture', validators=[FileAllowed(['jpg','png'])])
 	submit = SubmitField('Post')
+
+
+
+class TestForm(FlaskForm):
+	test_name = StringField('Test Name', validators=[DataRequired()])
+	category = StringField('Test category')
+	no_of_questions = IntegerField('Total No:of Questions', validators=[DataRequired()])
+	total_marks = IntegerField('Total Marks', validators=[DataRequired()])
+	submit = SubmitField('Submit')

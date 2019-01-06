@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+
+
+
+{% block content %}
+
+
+<div class="content-section">
+		<form method="POST" action="" enctype="multipart/form-data">
+			{{ form.hidden_tag() }}
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-4"> {{ legend }} </legend>
+				
+				<div class="form-group">
+					{{ form.test_name.label(class="form-control-label") }}
+					{% if form.test_name.errors %}
+						{{ form.test_name(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for errors in form.test_name.errors %}
+								<span>{{ error }}</span>
+							{%  endfor %}
+						</div>
+
+					{% else %}
+							{{ form.test_name(class="form-control form-control-lg") }}
+				
+					{% endif %}
+				</div>
+				<div class="form-group">
+					{{ form.category.label(class="form-control-label") }}
+					{% if form.category.errors %}
+						{{ form.category(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for errors in form.category.errors%}
+								<span>{{ error }}</span>
+							{%  endfor %}
+						</div>
+
+					{% else %}
+							{{ form.category(class="form-control form-control-lg") }}
+				
+					{% endif %}
+				</div>
+				<div class="form-group">
+					{{ form.no_of_questions.label(class="form-control-label") }}
+					{% if form.no_of_questions.errors %}
+						{{ form.no_of_questions(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for errors in form.no_of_questions.errors %}
+								<span>{{ error }}</span>
+							{%  endfor %}
+						</div>
+
+					{% else %}
+							{{ form.no_of_questions(class="form-control form-control-lg") }}
+				
+					{% endif %}
+				</div>
+				<div class="form-group">
+					{{ form.total_marks.label(class="form-control-label") }}
+					{% if form.total_marks.errors %}
+						{{ form.total_marks(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for errors in form.total_marks.errors %}
+								<span>{{ error }}</span>
+							{%  endfor %}
+						</div>
+
+					{% else %}
+							{{ form.total_marks(class="form-control form-control-lg") }}
+				
+					{% endif %}
+				</div>
+			</fieldset>
+			<div class="form-group">
+				{{ form.submit(class="btn btn-outline-info") }}
+			</div>
+
+		</form>
+	</div>
+
+
+{% endblock content %}

@@ -75,6 +75,7 @@
             }, 1000);
 
             timer(t,secondsToTime(t));
+            $('#submitQuiz').show();
             
   });
 
