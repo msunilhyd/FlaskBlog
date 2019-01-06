@@ -42,6 +42,7 @@ class Test(db.Model):
 	category = db.Column(db.String(30))
 	no_of_questions = db.Column(db.Integer, nullable=False)
 	total_marks = db.Column(db.Integer, nullable=False)
+	time_in_mins = db.Column(db.Integer, nullable=False, default=180)
 	date_posted = db.Column(db.DateTime(timezone=True), nullable=False, default=datetime.now)	
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 

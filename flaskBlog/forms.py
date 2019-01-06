@@ -79,4 +79,5 @@ class TestForm(FlaskForm):
 	category = StringField('Test category')
 	no_of_questions = IntegerField('Total No:of Questions', validators=[DataRequired()])
 	total_marks = IntegerField('Total Marks', validators=[DataRequired()])
+	time_in_mins = IntegerField('Test time in Minutes', validators=[DataRequired()])
 	submit = SubmitField('Submit')

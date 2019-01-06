@@ -128,7 +128,7 @@ def new_post():
 def new_test():
 	form = TestForm()
 	if form.validate_on_submit():
-		test = Test(test_name=form.test_name.data, category=form.category.data, no_of_questions=form.no_of_questions.data, total_marks=form.total_marks.data, author=current_user)
+		test = Test(test_name=form.test_name.data, category=form.category.data, no_of_questions=form.no_of_questions.data, total_marks=form.total_marks.data, time_in_mins=form.time_in_mins.data, author=current_user)
 		db.session.add(test)
 		db.session.commit()
 		flash("You post has been created", "success")
