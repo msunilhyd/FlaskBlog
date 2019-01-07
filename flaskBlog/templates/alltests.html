@@ -1,204 +1,53 @@
-
-
-
 {% extends "layout.html" %}
 
-
-
-
 {% block content %}
-<h1>Sample Quiz</h1>
-<div class="quiz-container">
-  <div id="quiz"></div>
-</div>
-<button id="previous">Previous Question</button>
-<button id="next">Next Question</button>
-<button id="submit">Submit Quiz</button>
-<div id="results"></div>
 
 
-<head>
-      <link rel="stylesheet" type="text/css" href=" {{ url_for('static', filename='styles.css')}} " >
-      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-</head>
+{% if current_user.is_authenticated %}
 
-<script type="text/javascript">
+<h1 class="mb-3 user-posts-heading"> Tests </h1>
+  {% for test in tests %}
 
-  (function() {
-  const quizContainer = document.getElementById("quiz");
+    <article class="media content-section">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-2" href="{{ url_for('all_tests') }}"> 
+            {{ test.test_name}}
+          </a>
+          <small class="text-muted">
+            {{ test.date_posted.strftime('%Y-%m-%d') }}
+          </small>
+        </div>
+        <h2> <a class="article-title" href="{{ url_for('tests', test_id=test.id) }}">
+            Category : {{ test.category }}
+           </a>
+        </h2>
+        <p class="article-content">
+         No:of Questions : {{ test.no_of_questions }}
+        </p>
+        <p class="article-content">
+          Total Marks : {{ test.total_marks }}
+        </p>
+        <p class="article-content">
+          Time in minutes : {{ test.time_in_mins }}
+        </p>
+       
+      </div>
 
-  // display quiz right away
-  buildQuiz();
+    </article>
 
-  const slides = document.querySelectorAll(".slide");
-  const submitButton = document.getElementById("submit");
+  {% endfor %}
 
-  const previousButton = document.getElementById("previous");
-  const nextButton = document.getElementById("next");
+{% else %}
 
-  previousButton.addEventListener("click", showPreviousSlide);
-  nextButton.addEventListener("click", showNextSlide);
-
-      // on submit, show results
-  submitButton.addEventListener("click", showResults);
-
-  let currentSlide = 0;
- // showSlide(0);
-
-
-  function buildQuiz() {
-    console.log('buildQuiz Called');
-    console.log('Test');
-    
-    var nextSectionId = "";
-        $.ajax({
-            url: "/getQuestions/",
-            type: "GET",
-            data: { "sectionId": nextSectionId },
-            success: function(data) {
-        console.log("Printing response data.");
-        console.log(data);
-            let parsedData = data;
-                showQuestions(parsedData);
-                  showSlide(0);
-            },
-            error: function(data) {
-                alert("Error getting questions from server");
-            }
-        });  
-  }
-
-  function showQuestions(data){
-    console.log("showQuestions called")
-  // we'll need a place to store the HTML output
-    const output = [];
-
-    console.log(data);
-
-    // for each question...
-    data.forEach((currentQuestion, questionNumber) => {
-      // we'll want to store the list of answer choices
-
-      const answers = [];
-
-      // and for each available answer...
-      for (letter in currentQuestion.answers) {
-
-        // ...add an HTML radio button
-        answers.push(
-          `<label>
-             <input type="radio" name="question${questionNumber}" value="${letter}">
-              ${letter} :
-              ${currentQuestion.answers[letter]}
-           </label>`
-        );
-      
-      }
-      
-      // add this question and its answers to the output
-      output.push(
-        `<div class="slide">
-           <div class="question"> ${currentQuestion.question} </div>
-           <div class="answers"> ${answers.join("")} </div>
-         </div>`
-      );
-    });
+      <div class="media-body">
+        <div class="article-metadata">
+        <h2> Please Login ! </h2>
+        </div>
+      </div>
 
 
-    // finally combine our output list into one string of HTML and put it on the page
-    quizContainer.innerHTML = output.join("");
+{% endif  %}
 
-  }
-
-
-
-  function submitQuiz() {
-    console.log('submitQuiz Called');
-    
-    var nextSectionId = "";
-        $.ajax({
-            url: "/tests/",
-            type: "GET",
-            data: { "sectionId": nextSectionId },
-            success: function(data) {
-        console.log("Printing response data.");
-        console.log(data);
-            let parsedData = JSON.parse(data);
-                showQuestions(parsedData);
-                  showSlide(0);
-            },
-            error: function(data) {
-                alert("Error getting questions from server");
-            }
-        });  
-  }
-
-  function showResults() {
-    // gather answer containers from our quiz
-    const answerContainers = quizContainer.querySelectorAll(".answers");
-
-    // keep track of user's answers
-    let numCorrect = 0;
-
-    // for each question...
-    myQuestions.forEach((currentQuestion, questionNumber) => {
-      // find selected answer
-      const answerContainer = answerContainers[questionNumber];
-      const selector = `input[name=question${questionNumber}]:checked`;
-      const userAnswer = (answerContainer.querySelector(selector) || {}).value;
-
-      // if answer is correct
-      if (userAnswer === currentQuestion.correctAnswer) {
-        // add to the number of correct answers
-        numCorrect++;
-
-        // color the answers green
-        answerContainers[questionNumber].style.color = "lightgreen";
-      } else {
-        // if answer is wrong or blank
-        // color the answers red
-        answerContainers[questionNumber].style.color = "red";
-      }
-    });
-
-  // show number of correct answers out of total
-  const resultsContainer = document.getElementById("results");
-  resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
-}
-
- function showSlide(n) {
-  console.log("showSlide() called");
-  const slides = document.querySelectorAll(".slide");
-    slides[currentSlide].classList.remove("active-slide");
-    slides[n].classList.add("active-slide");
-    currentSlide = n;
-    
-    if (currentSlide === 0) {
-      previousButton.style.display = "none";
-    } else {
-      previousButton.style.display = "inline-block";
-    }
-    
-    if (currentSlide === slides.length - 1) {
-      nextButton.style.display = "none";
-      submitButton.style.display = "inline-block";
-    } else {
-      nextButton.style.display = "inline-block";
-      submitButton.style.display = "none";
-    }
-  }
-
-  function showNextSlide() {
-    showSlide(currentSlide + 1);
-  }
-
-  function showPreviousSlide() {
-    showSlide(currentSlide - 1);
-  }
-
-  })();
-
-
-</script>
 
 {% endblock content %}

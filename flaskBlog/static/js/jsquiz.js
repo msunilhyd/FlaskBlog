@@ -157,14 +157,12 @@
   }
   
 
-
-
 function getQuestions(){
 
   console.log("getQuestions called");
 
             $.ajax({
-            url: "/tests/",
+            url: "/tests_user/",
             type: "GET",
             data: {},
             success: function(data) {

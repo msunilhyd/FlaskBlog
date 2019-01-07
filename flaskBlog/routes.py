@@ -2,12 +2,12 @@ import os
 import secrets
 from flask import render_template, url_for, flash, redirect, json,request, abort,jsonify, json
 from flaskBlog import app, db, bcrypt, mysql
-from flaskBlog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, TestForm
-from flaskBlog.models import User, Post, Test
+from flaskBlog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, TestForm, TestQuestionForm
+from flaskBlog.models import User, Post, Test, TestQuestion
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 
-
+		
 
 @app.route("/")
 def main():
@@ -25,7 +25,9 @@ def user_posts(username):
 
 @app.route("/home")
 def home():	
-	return render_template('home.html')
+	posts = Test.query.order_by(Test.date_posted.desc())
+	print(posts)
+	return render_template('home.html', posts=posts)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -119,7 +121,7 @@ def new_post():
 		db.session.add(post)
 		db.session.commit()
 		flash("You post has been created", "success")
-		return redirect(url_for('activity'))
+		return redirect(url_for('home'))
 	return render_template('create_post.html', title="New Post", form=form, legend='New Post')
 
 
@@ -131,10 +133,47 @@ def new_test():
 		test = Test(test_name=form.test_name.data, category=form.category.data, no_of_questions=form.no_of_questions.data, total_marks=form.total_marks.data, time_in_mins=form.time_in_mins.data, author=current_user)
 		db.session.add(test)
 		db.session.commit()
+		cur = mysql.connect().cursor()
+		cur.execute("select id from test where test_name = '{}'".format(form.test_name.data))
+		rv = cur.fetchall()
+		for emp in rv:
+			print("printing id of test below")
+			print(emp[0]);
 		flash("You post has been created", "success")
-		return redirect(url_for('home'))
+		return redirect(url_for('new_test_question'))
+
 	return render_template('create_test.html', title="New Test", form=form, legend='New test')
 
+@app.route("/new_test_question", methods=['GET', 'POST'])
+@login_required
+def new_test_question():
+	form = TestQuestionForm()
+	if form.validate_on_submit():
+		testQuestion = TestQuestion(test_id=form.test_id.data, 
+			question=form.question.data, a=form.a.data, b=form.b.data, c=form.c.data, d=form.d.data, ans=form.ans.data,
+			positive_marks=form.positive_marks.data, negative_marks=form.negative_marks.data, author=current_user)
+		db.session.add(testQuestion)
+		db.session.commit()
+		#cur = mysql.connect().cursor()
+		#cur.execute("select * from test where test_name like '{}'".format(form.test_name.data))
+		#cur.execute("select * from test")
+		#rv = cur.fetchall()
+		#empList = []
+		#for emp in rv:
+		#	empList.append(emp)
+		#return json.dumps(empList)
+		#return jsonify(empList)
+
+		flash("You Question has been created", "success")
+		redirect(url_for('new_test_question'))
+	return render_template('create_test_questions.html', title="New Test Question", form=form, legend='New test Question')
+
+
+@app.route("/tests")
+def tests():	
+	tests = Test.query.order_by(Test.date_posted.desc())
+	print(tests)
+	return render_template('alltests.html', tests=tests)
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
@@ -262,8 +301,8 @@ FROM questions;
         rv = cur.fetchall()
         return jsonify(rv)
 
-@app.route("/tests/", methods=['GET'])
-def tests():
+@app.route("/tests_user/", methods=['GET'])
+def tests_user():
 	print("Hey")
 	cur = mysql.connect().cursor()
 	cur.execute('''SELECT question,a,b,c,d,ans FROM questions''')
