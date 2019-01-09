@@ -1,4 +1,11 @@
 
+
+Steps for deployment to Linode :
+
+ssh root@139.162.34.166 
+
+
+
     CREATE TABLE user
 (
   userid int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
