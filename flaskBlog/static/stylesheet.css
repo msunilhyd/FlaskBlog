@@ -100,6 +100,29 @@ p {
     display:none;
 }
 
+
+
+#test_id {
+    text-indent: 10px;
+    display:none;
+}
+
+#time_in_mins {
+    text-indent: 10px;
+    display:none;
+}
+
+
+#end_of_test {
+    text-indent: 10px;
+    display:none;
+    font-size: 1.5rem;
+}
+
+#total_marks {
+    display:none;
+}
+
 .button {
     border:4px solid;
     border-radius:5px;

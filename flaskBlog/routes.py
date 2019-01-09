@@ -219,9 +219,9 @@ def take_test(test_id):
 	if(len(question.all()) == 0):
 		return redirect(url_for('new_test_question', test_id=test_id))
 
-
 	else:
-		print("Questions added already")
+		print("Questions ready to take the test")
+		return render_template('new_tests.html', title="Taking Test", legend='Take test',test_id=test_id, time_in_mins=test.time_in_mins, test_name=test.test_name, total_marks=test.total_marks)
 
 	flash('Your test is not empty! You can add more questions', 'success')
 	return redirect(url_for('new_test_question', test_id=test_id))
@@ -347,32 +347,63 @@ FROM questions;
         rv = cur.fetchall()
         return jsonify(rv)
 
-@app.route("/tests_user/", methods=['GET'])
-def tests_user():
+@app.route("/test_get_questions/", methods=['GET','POST'])
+def test_get_questions():
 	print("Hey")
-	cur = mysql.connect().cursor()
-	cur.execute('''SELECT question,a,b,c,d,ans FROM questions''')
-	rv = cur.fetchall()
+	test_id = request.form['test_id']
+	
+	q = (db.session.query(TestQuestion, Question)
+    .filter(TestQuestion.test_id == test_id)
+    .filter(TestQuestion.question_id == Question.id)
+    .all())
+
 	empList = []
 	choices = []
-	for emp in rv:
-		print("Hello");
-		print(emp[0]);
-		choices.append(emp[1]);
-		choices.append(emp[2]);
-		choices.append(emp[3]);
-		choices.append(emp[4]);
+	for emp in q:
+		choices.append(emp.Question.a);
+		choices.append(emp.Question.b);
+		choices.append(emp.Question.c);
+		choices.append(emp.Question.d);
 		
 		empDict = {
-		'question': emp[0],
+		'question': emp.Question.question_content,
 		'choices' : choices,
-		'correctAnswer': emp[5]
+		'correctAnswer': emp.Question.ans,
+		'positive_marks' : emp.Question.positive_marks,
+		'negative_marks' : emp.Question.negative_marks
 		}
 		choices = []
 		empList.append(empDict)
 	return json.dumps(empList)
 
 
+
+
+@app.route("/test_get_answers/", methods=['GET','POST'])
+def test_get_answers():
+	print("Hey test_get_answers called")
+	test_id = request.form['test_id']
+	
+	q = (db.session.query(TestQuestion, Question)
+    .filter(TestQuestion.test_id == test_id)
+    .filter(TestQuestion.question_id == Question.id)
+    .all())
+	empList = []
+	choices = []
+	for emp in q:
+		choices.append(emp.Question.a);
+		choices.append(emp.Question.b);
+		choices.append(emp.Question.c);
+		choices.append(emp.Question.d);
+		
+		empDict = {
+		'question': emp.Question.question_content,
+		'choices' : choices,
+		'correctAnswer': emp.Question.ans
+		}
+		choices = []
+		empList.append(empDict)
+	return json.dumps(empList)
 
 @app.route("/getAnswers/", methods=['GET'])
 def getAnswers():

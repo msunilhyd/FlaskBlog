@@ -19,9 +19,19 @@
   // Click handler for the 'startQuiz' button
   $('#startQuiz').on('click', function (e) {
      $('#startQuiz').hide();
+    $('#submitQuiz').show();
 
-     getQuestions();
-     var t =  80;
+
+
+     var t = $('#time_in_mins').text();
+     console.log('from js time_in_mins is : ' + t);
+     t = t * 60;
+
+     var test_id = $('#test_id').text();
+     console.log("printing test_id before ajax" + test_id);
+
+     getQuestions(test_id);
+
 
         function secondsToTime(secs)
         {
@@ -97,8 +107,8 @@
   // Click handler for the 'prev' button
   $('#prev').on('click', function (e) {
     e.preventDefault();
-    $('#submitQuiz').hide();
     $('#next').show();
+    $('#end_of_test').hide();
     if(quiz.is(':animated')) {
       return false;
     }
@@ -157,14 +167,16 @@
   }
   
 
-function getQuestions(){
+function getQuestions(test_id){
 
   console.log("getQuestions called");
+  console.log("test_id is" + test_id);
+  test_id = test_id.replace(/ /g,'');
 
             $.ajax({
-            url: "/tests_user/",
-            type: "GET",
-            data: {},
+            url: "/test_get_questions/",
+            type: "POST",
+            data: {"test_id":test_id},
             success: function(data) {
         console.log("Printing response data.");
         console.log(data);
@@ -179,6 +191,30 @@ function getQuestions(){
 }
 
 
+
+function getAnswers(test_id){
+
+  console.log("getAnswers called");
+  console.log("test_id is" + test_id);
+  test_id = test_id.replace(/ /g,'');
+
+            $.ajax({
+            url: "/test_get_answers/",
+            type: "POST",
+            data: {"test_id":test_id},
+            success: function(data) {
+        console.log("Printing response data.");
+        console.log(data);
+            let parsedData = JSON.parse(data);
+            questions = parsedData;
+                //displayScore();
+            },
+            error: function(data) {
+                alert("Error getting questions from server");
+            }
+        }); 
+}
+
   // Displays next requested element
   function displayNext() { 
       console.log("Printing questions");
@@ -187,7 +223,11 @@ function getQuestions(){
     quiz.fadeOut(function() {
       $('#question').remove();
       
-      if(questionCounter < questions.length-1){
+      console.log("Printing questionCounter below");
+
+      if(questionCounter < questions.length){
+                $('#end_of_test').hide();
+              console.log('in if case : ' + questionCounter);
         var nextQuestion = createQuestionElement(questionCounter);
         quiz.append(nextQuestion).fadeIn();
         if (!(isNaN(selections[questionCounter]))) {
@@ -203,13 +243,18 @@ function getQuestions(){
           $('#next').show();
         }
       }else {
-        console.log(questionCounter);
-        var nextQuestion = createQuestionElement(questionCounter);
-        quiz.append(nextQuestion).fadeIn();
+              console.log('in else case : ' + questionCounter);
+      
+        console.log(questions.length-1);
+        console.log('questionCounter is = questions.length-1' + questionCounter);
+       
+        
         $('#next').hide();
         //$('#prev').hide();
-        $('#submitQuiz').show();
-        console.log("calling myFunction");         
+        console.log("calling myFunction");
+        console.log('selections in else is : ' + selections); 
+        $('#end_of_test').show();
+
       }
     });
   }
@@ -217,12 +262,15 @@ function getQuestions(){
     // Click handler for the 'submitQuiz' button
   $('#submitQuiz').on('click', function (e) {
         console.log("Diff String called");
+        $('#end_of_test').hide();
         isSubmit = 1;
         $('#timerCount').hide();
         $('#prev').hide();
         var scoreElem = displayScore();
         quiz.append(scoreElem).fadeIn();
   });
+
+
 
   
   // Computes score and returns a paragraph element to be displayed
@@ -234,24 +282,52 @@ function getQuestions(){
     var score = $('<p>',{id: 'score'});
     
     console.log("selections is : " + selections);
+    console.log('selections.length is : ' + selections.length);
     var numCorrect = 0;
+    var numNegative = 0;
+
+    var correctAns = 0;
+    var worngAns = 0;
+    var unansweredQues = 0;
+
+    var totalMarks = $('#total_marks').text();
+
+
+
     for (var i = 0; i < selections.length; i++) {
-      console.log(questions[i].correctAnswer);
-      console.log("Printing above and below selections");
-      console.log(selections[i]);
+
+      console.log('i is : ' + i)
+      console.log('Question is : ' + questions[i].question)
+      console.log('correctAnswer is : ' + questions[i].correctAnswer)
+    
+      console.log("User i th selection is : " + selections[i]);
       
+
         var ans = questions[i].choices;
-        console.log("Printing ans choice below");
-        console.log(ans[selections[i]]);
         var userAns = ans[selections[i]];
+        console.log(' userAns is : ' + ans[selections[i]])
 
       if (userAns === questions[i].correctAnswer) {
-        numCorrect++;
-        console.log("Correct Answer");
+        numCorrect += questions[i].positive_marks;
+        correctAns += 1;
+        console.log("User Answer is correct, adding to score");
+      }
+      else if(userAns !== undefined)
+      {
+        numNegative += questions[i].negative_marks;
+        worngAns += 1;
+      }
+      else
+      {
+        unansweredQues += 1;
       }
     }
-    score.append('Your Score :-  ' + numCorrect + ' / ' +
-                 questions.length );
+
+    var finalScore = numCorrect - numNegative;
+    score.append('Your Score :-  ' + finalScore + ' / ' + 'out of' +  
+                 totalMarks + ' marks. <br> Marks for Correct Answers :- ' + numCorrect + '<br>  Marks cut for Incorrect Answers :- ' +  numNegative
+                 + '<br> Correctly Answered Questions :- ' + correctAns + '<br> Incorrectly Answered Questions :- ' + worngAns
+                 + '<br> Unanswered Questions :-' + unansweredQues);
     var x = document.getElementById('submitQuiz');
     x.style.display = "none";
     $('#next').hide();

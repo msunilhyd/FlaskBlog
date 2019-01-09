@@ -12,11 +12,22 @@
 	</head>
    	 <div id='container' class='container'>
 			<div id='title'>
-				<h1>Dynamic Mock Quiz</h1>
+				<h1>{{ test_name }}</h1>
 			</div>
         			<span id="timerCount" class="timerCount"></span>
    			<br/>
-  			<div id='quiz' ></div>
+
+        <div id='total_marks'> {{ total_marks }} </div>
+        
+
+        <div id='test_id'> {{ test_id }} </div>
+        <div id='time_in_mins'> {{ time_in_mins }} </div>
+
+
+        <div id='end_of_test' >You've reached the end of the test, previous was the last question. 
+                               <br> &nbspYou can either Submit or go Back.
+          </div>
+  			<div id='quiz' > </div>
   			<div class='button' id='prev'><a href='#'>Prev</a></div>
   			<div class='button' id='startQuiz'><a href='#'>Start</a></div>
     		<div class='button' id='next'><a href='#'>Next</a></div>
