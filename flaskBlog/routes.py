@@ -199,8 +199,32 @@ def show_questions(test_id):
 	else:
 		print("Questions added already")
 
-	flash('Your post has been deleted!', 'success')
-	return redirect(url_for('home'))
+	flash('Your test is not empty! You can add more questions', 'success')
+	return redirect(url_for('new_test_question', test_id=test_id))
+
+
+@app.route("/take_test/<int:test_id>",  methods=['GET', 'POST'])
+@login_required
+def take_test(test_id):
+	test = Test.query.get_or_404(test_id)
+	question = TestQuestion.query.filter_by(test_id=test_id)
+	q = (db.session.query(TestQuestion, Question)
+    .filter(TestQuestion.test_id == test_id)
+    .filter(TestQuestion.question_id == Question.id)
+    .all())
+	print('printing q with joins below')
+	print(q)
+	print(question)
+	print("result question len", len(question.all()))
+	if(len(question.all()) == 0):
+		return redirect(url_for('new_test_question', test_id=test_id))
+
+
+	else:
+		print("Questions added already")
+
+	flash('Your test is not empty! You can add more questions', 'success')
+	return redirect(url_for('new_test_question', test_id=test_id))
 
 
 

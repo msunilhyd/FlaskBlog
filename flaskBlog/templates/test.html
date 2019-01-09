@@ -6,8 +6,8 @@
         <a class="mr-2" href="{{ url_for('user_posts', username=test.author.username) }}">{{ test.author.username }}</a>
         <small class="text-muted">{{ test.date_posted.strftime('%Y-%m-%d') }}</small>
 
-        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('show_questions', test_id=test.id) }}">Show Questions</a>
         <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('show_questions', test_id=test.id) }}">Add Questions</a>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('take_test', test_id=test.id) }}">Take Test</a>
 
 
       </div>
