@@ -3,7 +3,7 @@ import secrets
 from flask import render_template, url_for, flash, redirect, json,request, abort,jsonify, json
 from flaskBlog import app, db, bcrypt, mysql
 from flaskBlog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, TestForm, TestQuestionForm
-from flaskBlog.models import User, Post, Test, TestQuestion
+from flaskBlog.models import User, Post, Test, TestQuestion, Question
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 
@@ -133,39 +133,35 @@ def new_test():
 		test = Test(test_name=form.test_name.data, category=form.category.data, no_of_questions=form.no_of_questions.data, total_marks=form.total_marks.data, time_in_mins=form.time_in_mins.data, author=current_user)
 		db.session.add(test)
 		db.session.commit()
-		cur = mysql.connect().cursor()
-		cur.execute("select id from test where test_name = '{}'".format(form.test_name.data))
-		rv = cur.fetchall()
-		for emp in rv:
-			print("printing id of test below")
-			print(emp[0]);
+		tests = Test.query.filter_by(test_name=form.test_name.data).order_by(Test.date_posted.desc()).first()
+
+		for test in tests:
+			print(test.id)
 		flash("You post has been created", "success")
-		return redirect(url_for('new_test_question'))
+		return redirect(url_for('new_test_question', test_id=1))
 
 	return render_template('create_test.html', title="New Test", form=form, legend='New test')
 
-@app.route("/new_test_question", methods=['GET', 'POST'])
+
+
+@app.route("/new_test_question/<int:test_id>", methods=['GET', 'POST'])
 @login_required
-def new_test_question():
+def new_test_question(test_id):
 	form = TestQuestionForm()
 	if form.validate_on_submit():
-		testQuestion = TestQuestion(test_id=form.test_id.data, 
-			question=form.question.data, a=form.a.data, b=form.b.data, c=form.c.data, d=form.d.data, ans=form.ans.data,
-			positive_marks=form.positive_marks.data, negative_marks=form.negative_marks.data, author=current_user)
+		current_question = Question(question_content=form.question_content.data, a=form.a.data, b=form.b.data, c=form.c.data, d=form.d.data, ans=form.ans.data,positive_marks=form.positive_marks.data, negative_marks=form.negative_marks.data)
+		db.session.add(current_question)
+		db.session.commit()
+		question = Question.query.filter_by(question_content=form.question_content.data).order_by(Question.date_posted.desc()).first()
+		print("Printing questionId below : ")
+		print(question.id);
+		flash("You Question has been created", "success")
+		print("Redirecting to home : ")
+		testQuestion = TestQuestion(test_id=test_id, question_id=question.id)
 		db.session.add(testQuestion)
 		db.session.commit()
-		#cur = mysql.connect().cursor()
-		#cur.execute("select * from test where test_name like '{}'".format(form.test_name.data))
-		#cur.execute("select * from test")
-		#rv = cur.fetchall()
-		#empList = []
-		#for emp in rv:
-		#	empList.append(emp)
-		#return json.dumps(empList)
-		#return jsonify(empList)
-
-		flash("You Question has been created", "success")
-		redirect(url_for('new_test_question'))
+		return redirect(url_for('tests'))
+	print("QuestionForm Not Validated : ")
 	return render_template('create_test_questions.html', title="New Test Question", form=form, legend='New test Question')
 
 
@@ -175,10 +171,36 @@ def tests():
 	print(tests)
 	return render_template('alltests.html', tests=tests)
 
+@app.route("/test/<int:test_id>")
+def test(test_id):
+	test = Test.query.get_or_404(test_id)
+	return render_template('test.html', test=test)
+
+
 @app.route("/post/<int:post_id>")
 def post(post_id):
 	post = Post.query.get_or_404(post_id)
 	return render_template('post.html', title=post.title, post=post)
+
+
+
+@app.route("/show_questions/<int:test_id>",  methods=['GET', 'POST'])
+@login_required
+def show_questions(test_id):
+	test = Test.query.get_or_404(test_id)
+	question = TestQuestion.query.filter_by(test_id=test_id)
+	print('printing question below')
+	print(question)
+	print("result question len", len(question.all()))
+	if(len(question.all()) == 0):
+		return redirect(url_for('new_test_question', test_id=test_id))
+
+
+	else:
+		print("Questions added already")
+
+	flash('Your post has been deleted!', 'success')
+	return redirect(url_for('home'))
 
 
 

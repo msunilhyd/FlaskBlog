@@ -18,7 +18,7 @@
             {{ test.date_posted.strftime('%Y-%m-%d') }}
           </small>
         </div>
-        <h2> <a class="article-title" href="{{ url_for('tests', test_id=test.id) }}">
+        <h2> <a class="article-title" href="{{ url_for('test', test_id=test.id) }}">
             Category : {{ test.category }}
            </a>
         </h2>

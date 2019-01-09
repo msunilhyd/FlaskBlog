@@ -84,8 +84,7 @@ class TestForm(FlaskForm):
 
 
 class TestQuestionForm(FlaskForm):
-	test_id = IntegerField('Test ID', validators=[DataRequired()])
-	question = StringField('Question', validators=[DataRequired()])
+	question_content = StringField('Question', validators=[DataRequired()])
 	a = StringField('A', validators=[DataRequired()])
 	b = StringField('B', validators=[DataRequired()])
 	c = StringField('C', validators=[DataRequired()])
