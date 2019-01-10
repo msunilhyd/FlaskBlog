@@ -2,8 +2,6 @@
 {% extends "layout.html" %}
 
 
-
-
 {% block content %}
 <h1></h1>
 	<head>
@@ -17,15 +15,14 @@
         			<span id="timerCount" class="timerCount"></span>
    			<br/>
 
-        <div id='total_marks'> {{ total_marks }} </div>
+        <div id='total_marks_div'> {{ total_marks }} </div>
         
 
-        <div id='test_id'> {{ test_id }} </div>
-        <div id='time_in_mins'> {{ time_in_mins }} </div>
+        <div id='test_id_div'> {{ test_id }} </div>
+        <div id='time_in_mins_div'> {{ time_in_mins }} </div>
 
 
-        <div id='end_of_test' >You've reached the end of the test, previous was the last question. 
-                               <br> &nbspYou can either Submit or go Back.
+        <div id='end_of_test_div' class='end_of_test_div' >Reached End of Test.
           </div>
   			<div id='quiz' > </div>
   			<div class='button' id='prev'><a href='#'>Prev</a></div>

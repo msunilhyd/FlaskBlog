@@ -23,11 +23,11 @@
 
 
 
-     var t = $('#time_in_mins').text();
+     var t = $('#time_in_mins_div').text();
      console.log('from js time_in_mins is : ' + t);
      t = t * 60;
 
-     var test_id = $('#test_id').text();
+     var test_id = $('#test_id_div').text();
      console.log("printing test_id before ajax" + test_id);
 
      getQuestions(test_id);
@@ -108,11 +108,15 @@
   $('#prev').on('click', function (e) {
     e.preventDefault();
     $('#next').show();
-    $('#end_of_test').hide();
     if(quiz.is(':animated')) {
       return false;
     }
+
+
+    if(questionCounter<questions.length){
     choose();
+    }
+
     questionCounter--;
     displayNext();
   });
@@ -226,7 +230,7 @@ function getAnswers(test_id){
       console.log("Printing questionCounter below");
 
       if(questionCounter < questions.length){
-                $('#end_of_test').hide();
+                $('#end_of_test_div').hide();
               console.log('in if case : ' + questionCounter);
         var nextQuestion = createQuestionElement(questionCounter);
         quiz.append(nextQuestion).fadeIn();
@@ -253,7 +257,7 @@ function getAnswers(test_id){
         //$('#prev').hide();
         console.log("calling myFunction");
         console.log('selections in else is : ' + selections); 
-        $('#end_of_test').show();
+        $('#end_of_test_div').show();
 
       }
     });
@@ -262,7 +266,7 @@ function getAnswers(test_id){
     // Click handler for the 'submitQuiz' button
   $('#submitQuiz').on('click', function (e) {
         console.log("Diff String called");
-        $('#end_of_test').hide();
+        $('#end_of_test_div').hide();
         isSubmit = 1;
         $('#timerCount').hide();
         $('#prev').hide();
@@ -290,7 +294,7 @@ function getAnswers(test_id){
     var worngAns = 0;
     var unansweredQues = 0;
 
-    var totalMarks = $('#total_marks').text();
+    var totalMarks = $('#total_marks_div').text();
 
 
 

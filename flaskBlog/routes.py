@@ -133,12 +133,10 @@ def new_test():
 		test = Test(test_name=form.test_name.data, category=form.category.data, no_of_questions=form.no_of_questions.data, total_marks=form.total_marks.data, time_in_mins=form.time_in_mins.data, author=current_user)
 		db.session.add(test)
 		db.session.commit()
-		tests = Test.query.filter_by(test_name=form.test_name.data).order_by(Test.date_posted.desc()).first()
+		test = Test.query.filter_by(test_name=form.test_name.data).order_by(Test.date_posted.desc()).first()
 
-		for test in tests:
-			print(test.id)
-		flash("You post has been created", "success")
-		return redirect(url_for('new_test_question', test_id=1))
+		flash("You test has been created", "success")
+		return redirect(url_for('new_test_question', test_id=test.id))
 
 	return render_template('create_test.html', title="New Test", form=form, legend='New test')
 

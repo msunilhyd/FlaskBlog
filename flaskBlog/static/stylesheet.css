@@ -102,26 +102,27 @@ p {
 
 
 
-#test_id {
+#test_id_div {
     text-indent: 10px;
     display:none;
 }
 
-#time_in_mins {
+#time_in_mins_div {
     text-indent: 10px;
     display:none;
 }
 
 
-#end_of_test {
+#end_of_test_div {
     text-indent: 10px;
     display:none;
     font-size: 1.5rem;
 }
 
-#total_marks {
+#total_marks_div {
     display:none;
 }
+
 
 .button {
     border:4px solid;
