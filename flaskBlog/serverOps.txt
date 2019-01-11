@@ -1,0 +1,252 @@
+
+ssh
+	ssh root@139.162.34.166
+
+set Host Name
+	hostnamectl set-hostname flask-server
+
+	type 'hostname' to check
+
+edit hosts file
+	vim /etc/hosts
+
+
+add a user which we will make sudo
+	adduser sunil
+
+	adduser sunil sudo
+
+Steps for sshkey based sign in 
+mkdir .ssh in home folder
+ssh-keygen -b 4096 (Run this on your local machine)
+	Enter file in which to save the key (/c/Users/SunilMocharla/.ssh/id_rsa): /c/Users/SunilMocharla/.ssh/id_rsa_linode_nanode
+scp id_rsa_linode_nanode.pub sunil@139.162.34.166:~/.ssh/authorized_keys
+
+On Remote Server
+	sudo chmod 700 ~/.ssh/
+	sudo chmod 600 ~/.ssh/*
+
+
+install firewall
+	sudo apt-install ufw
+	sudo ufw default allow outgoing
+	sudo ufw default deny incoming
+	sudo ufw allow ssh
+	sudo ufw allow 5000
+	sudo ufw enable
+
+	sudo ufw status --to check all the rules
+
+	clone your application to the remote server
+
+	sudo apt install python3-pip
+	sudo apt install python3-venv
+	python3 -m venv FlaskBlog/venv
+	pip install -r requirements.txt
+
+		if you run into wheel errors with the above command
+		run the below : 
+		pip install wheel
+
+	Create a temporary env var to check the app with the dev server
+
+		export FLASK_APP=run.py
+		flask run --host=0.0.0.0
+
+	instal mysql-server on ubuntu
+
+		sudo apt-get update
+		sudo apt-get install mysql-server
+		sudo ufw allow mysql
+
+		sudo systemctl start mysql
+
+		Launch at reboot:
+			sudo systemctl enable mysql
+
+		sudo /usr/bin/mysql -u root -p
+
+		Update the mysql root password :
+
+			use mysql; 
+			UPDATE mysql.user SET Password = PASSWORD('kumar') WHERE User = 'root';
+			or
+			update user set authentication_string=password('kumar') where user='root';
+
+			FLUSH PRIVILEGES;
+
+
+			CREATE DATABASE demodb;
+
+			INSERT INTO mysql.user (User,Host,authentication_string,ssl_cipher,x509_issuer,x509_subject)
+			VALUES('demouser','localhost',PASSWORD('demopassword'),'','','');
+
+			FLUSH PRIVILEGES;
+
+			GRANT ALL PRIVILEGES ON demodb.* to demouser@localhost;
+
+			FLUSH PRIVILEGES;
+
+			SHOW GRANTS FOR 'demouser'@'localhost';
+
+EXIT out of mysql
+
+sudo apt install nginx
+
+pip install gunicorn
+
+sudo rm /etc/nginx/sites-enabled/default
+sudo vim /etc/nginx/sites-enabled/flaskBlog
+
+put the following in the above
+
+server {
+        listen 80;
+        server_name www.quizproco.com;
+
+        location /static {
+                alias /home/sunil/FlaskBlog/flaskBlog/static;
+        }
+
+        location / {
+
+                proxy_pass http://localhost:8000;
+                include /etc/nginx/proxy_params;
+                proxy_redirect off;
+        }
+}
+
+
+sudo ufw allow http/tcp
+
+sudo ufw delete allow 5000
+
+sudo ufw enable
+
+sudo systemctl restart nginx
+
+
+find out how many cpu cores on your node
+	nproc --all
+
+	Generally there should be (2 * cores) + 1 workers
+
+	So,
+	gunicorn -w 3 run:app
+
+
+install supervisor for auto starting the server on crash:
+
+sudo apt install supervisor
+
+sudo vim /etc/supervisor/conf.d/flaskBlog.conf
+put the below : 
+
+[program:flaskBlog]
+directory=/home/sunil/FlaskBlog
+command=/home/sunil/FlaskBlog/venv/bin/gunicorn -w 3 run:app
+user=sunil
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+stderr_logfile=/var/log/flaskBlog/flaskBlog.err.log
+stdout_logfile=/var/log/flaskBlog/flaskBlog.out.log
+
+create the above log files
+
+sudo mkdir -p /var/log/flaskBlog
+sudo touch /var/log/flaskBlog/flaskBlog.err.log
+sudo touch /var/log/flaskBlog/flaskBlog.out.log
+
+restart supervisor
+
+sudo supervisorctl reload
+
+allow users to upload files(profile pics etc) of greater size
+
+sudo vim /etc/nginx/nginx.conf
+
+put the below line
+
+client_max_body_size 5M
+
+restart nginx
+
+sudo systemctl restart nginx
+
+
+
+install lets_encrypt for ssl
+
+ sudo apt-get update
+ sudo apt-get install software-properties-common
+ sudo add-apt-repository universe
+ sudo add-apt-repository ppa:certbot/certbot
+ sudo apt-get update
+ sudo apt-get install python-certbot-nginx
+
+
+
+
+
+
+sudo certbot --nginx
+
+
+output from server after running the above:
+
+
+Please choose whether or not to redirect HTTP traffic to HTTPS, removing HTTP access.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1: No redirect - Make no further changes to the webserver configuration.
+2: Redirect - Make all requests redirect to secure HTTPS access. Choose this for
+new sites, or if you're confident your site works on HTTPS. You can undo this
+change by editing your web server's configuration.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 2
+Redirecting all traffic on port 80 to ssl in /etc/nginx/sites-enabled/flaskBlog
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Congratulations! You have successfully enabled https://www.quizproco.com
+
+You should test your configuration at:
+https://www.ssllabs.com/ssltest/analyze.html?d=www.quizproco.com
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+IMPORTANT NOTES:
+ - Congratulations! Your certificate and chain have been saved at:
+   /etc/letsencrypt/live/www.quizproco.com/fullchain.pem
+   Your key file has been saved at:
+   /etc/letsencrypt/live/www.quizproco.com/privkey.pem
+   Your cert will expire on 2019-04-10. To obtain a new or tweaked
+   version of this certificate in the future, simply run certbot again
+   with the "certonly" option. To non-interactively renew *all* of
+   your certificates, run "certbot renew"
+ - Your account credentials have been saved in your Certbot
+   configuration directory at /etc/letsencrypt. You should make a
+   secure backup of this folder now. This configuration directory will
+   also contain certificates and private keys obtained by Certbot so
+   making regular backups of this folder is ideal.
+ - If you like Certbot, please consider supporting our work by:
+
+   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+   Donating to EFF:                    https://eff.org/donate-le
+
+
+
+After installing the certificate as above, add the https allow rule by ufw as below : 
+
+sudo ufw allow https
+sudo ufw enable
+
+
+
+Stop the flask-server if you want, with below : 
+
+		sudo pkill -f supervisord
+
+Start back the Supervisor
+
+		sudo service supervisor restart
+
