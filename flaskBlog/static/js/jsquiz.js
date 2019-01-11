@@ -1,4 +1,32 @@
+
+
+    function selectradio(id){
+    
+        var $radio = $(this);
+        
+        // if this was previously checked
+        if ($radio.data('waschecked') == true)
+        {
+                    //$radio.prop('checked', false);
+            document.getElementById(id).checked = false;
+            $radio.data('waschecked', false);
+        }
+        else
+        {
+            document.getElementById(id).checked = true;
+            $radio.data('waschecked', true);
+        }
+        
+        // remove was checked from other radios
+        $radio.siblings('input[name="rad"]').data('waschecked', false);
+}
+
+  
+
 (function() {
+
+
+
   var questions = [];
   
   var questionCounter = 0; //Tracks question number
@@ -15,12 +43,14 @@
  $('#count').hide();
 
 
+
+
   // Click handler for the 'startQuiz' button
   $('#startQuiz').on('click', function (e) {
      $('#startQuiz').hide();
     $('#submitQuiz').show();
 
-
+    
 
      var t = $('#time_in_mins_div').text();
      console.log('from js time_in_mins is : ' + t);
@@ -102,6 +132,8 @@
       displayNext();
     
   });
+
+
   
   // Click handler for the 'prev' button
   $('#prev').on('click', function (e) {
@@ -155,7 +187,7 @@
     var input = '';
     for (var i = 0; i < questions[index].choices.length; i++) {
       item = $('<li>');
-      input = '<input type="radio" name="answer" class="radioClass" id=' + i + ' value=' + i + ' />';
+      input = '<input type="radio" name="answer" class="radioClass" id=' + i + ' value=' + i + ' onclick="selectradio('+i+')" />';
       input += '<label for=' + i + '>' + questions[index].choices[i] + '</label>';
 
       item.append(input);
@@ -332,24 +364,11 @@ function getAnswers(test_id){
       }
     }
 
+
     if(i < questionsAns.length-1)
     {
         unansweredQues += questionsAns.length - i ;
     }
-
-    console.log('Nothing');
-
-        console.log('numCorrect is : ' + numCorrect);
-
-        console.log('numNegative is : ' + numNegative);
-        
-        console.log('worngAns is : ' + worngAns);
-
-        console.log('unansweredQues is : ' + unansweredQues);
-
-
-
-    
 
     var finalScore = numCorrect - numNegative;
     score.append('Your Score :-  ' + finalScore + ' / ' + 'out of' +  
@@ -363,7 +382,24 @@ function getAnswers(test_id){
     return score;
   }
 
+  $('input[name="answer"]').bind('click',function(e){
+      debugger;
+      alert('hi');
+        var radio = $(this);
+        
+        // if this was previously checked
+        if (radio.prop('checked') == true)
+        {
+            radio.prop('checked', false);
+        }
+        else
+            radio.prop('checked', true);
+        
+        // remove was checked from other radios
+        //$radio.siblings('input[name="rad"]').data('waschecked', false);
+    });
 
+  
 
 
 })();
