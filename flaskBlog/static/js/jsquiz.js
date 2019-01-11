@@ -2,17 +2,20 @@
 
     function selectradio(id){
     
+      console.log('selectradio called');
+
         var $radio = $(this);
         
         // if this was previously checked
         if ($radio.data('waschecked') == true)
         {
-                    //$radio.prop('checked', false);
+            console.log('waschecked is true');
             document.getElementById(id).checked = false;
             $radio.data('waschecked', false);
         }
         else
         {
+            console.log('waschecked is false');
             document.getElementById(id).checked = true;
             $radio.data('waschecked', true);
         }
