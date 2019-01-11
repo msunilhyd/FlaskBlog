@@ -387,19 +387,12 @@ def test_get_answers():
     .filter(TestQuestion.question_id == Question.id)
     .all())
 	empList = []
-	choices = []
-	for emp in q:
-		choices.append(emp.Question.a);
-		choices.append(emp.Question.b);
-		choices.append(emp.Question.c);
-		choices.append(emp.Question.d);
-		
+	for emp in q:		
 		empDict = {
-		'question': emp.Question.question_content,
-		'choices' : choices,
-		'correctAnswer': emp.Question.ans
+		'correctAnswer': emp.Question.ans,
+		'positive_marks' : emp.Question.positive_marks,
+		'negative_marks' : emp.Question.negative_marks
 		}
-		choices = []
 		empList.append(empDict)
 	return json.dumps(empList)
 

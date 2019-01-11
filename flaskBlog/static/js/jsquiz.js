@@ -11,7 +11,6 @@
   
   // Build Quiz
  // buildQuiz();
- console.log("is this the first");
  $('#next').hide();
  $('#count').hide();
 
@@ -195,30 +194,6 @@ function getQuestions(test_id){
 }
 
 
-
-function getAnswers(test_id){
-
-  console.log("getAnswers called");
-  console.log("test_id is" + test_id);
-  test_id = test_id.replace(/ /g,'');
-
-            $.ajax({
-            url: "/test_get_answers/",
-            type: "POST",
-            data: {"test_id":test_id},
-            success: function(data) {
-        console.log("Printing response data.");
-        console.log(data);
-            let parsedData = JSON.parse(data);
-            questions = parsedData;
-                //displayScore();
-            },
-            error: function(data) {
-                alert("Error getting questions from server");
-            }
-        }); 
-}
-
   // Displays next requested element
   function displayNext() { 
       console.log("Printing questions");
@@ -270,23 +245,42 @@ function getAnswers(test_id){
         isSubmit = 1;
         $('#timerCount').hide();
         $('#prev').hide();
-        var scoreElem = displayScore();
-        quiz.append(scoreElem).fadeIn();
+            choose();
+
+
+       var test_id = $('#test_id_div').text();
+        getAnswers(test_id);
+
   });
 
+var questionsAns;
+ 
+function getAnswers(test_id){
+
+  console.log("getAnswers called");
+  console.log("test_id is" + test_id);
+  test_id = test_id.replace(/ /g,'');
+
+            $.ajax({
+            url: "/test_get_answers/",
+            type: "POST",
+            data: {"test_id":test_id},
+            success: function(data) {
+        console.log("Printing Answers data.");
+        console.log(data);
+            let parsedData = JSON.parse(data);
+            questionsAns = parsedData;
+            var scoreElem = displayScore(questionsAns);
+            quiz.append(scoreElem).fadeIn();
+            },
+            error: function(data) {
+                alert("Error getting questions from server");
+            }
+        }); 
+}
 
 
-  
-  // Computes score and returns a paragraph element to be displayed
-  function displayScore() {
-    
-    $('#question').hide();
 
-    console.log("displayScore calling");
-    var score = $('<p>',{id: 'score'});
-    
-    console.log("selections is : " + selections);
-    console.log('selections.length is : ' + selections.length);
     var numCorrect = 0;
     var numNegative = 0;
 
@@ -294,44 +288,74 @@ function getAnswers(test_id){
     var worngAns = 0;
     var unansweredQues = 0;
 
+
+  // Computes score and returns a paragraph element to be displayed
+  function displayScore(questionsAns) {
+    
+    $('#question').hide();
+
+    var score = $('<p>',{id: 'score'});
+
+
     var totalMarks = $('#total_marks_div').text();
 
+    console.log('printing questionsAns from displayScore' + questionsAns);
 
+    console.log('printing length of questions : ' + questionsAns.length);
+
+
+    console.log('printing selections : ' + selections);
 
     for (var i = 0; i < selections.length; i++) {
 
-      console.log('i is : ' + i)
-      console.log('Question is : ' + questions[i].question)
-      console.log('correctAnswer is : ' + questions[i].correctAnswer)
-    
-      console.log("User i th selection is : " + selections[i]);
-      
-
         var ans = questions[i].choices;
         var userAns = ans[selections[i]];
-        console.log(' userAns is : ' + ans[selections[i]])
+        console.log(' userAns is : ' + userAns);
+        console.log(' correctAns is : ' + questionsAns[i].correctAnswer);
 
-      if (userAns === questions[i].correctAnswer) {
-        numCorrect += questions[i].positive_marks;
+      if (userAns === questionsAns[i].correctAnswer) {
+        numCorrect += questionsAns[i].positive_marks;
         correctAns += 1;
+        console.log('numCorrect is : ' + numCorrect);
         console.log("User Answer is correct, adding to score");
       }
       else if(userAns !== undefined)
       {
-        numNegative += questions[i].negative_marks;
+        numNegative += questionsAns[i].negative_marks;
         worngAns += 1;
       }
       else
       {
+        console.log('unansweredQues below');
+        console.log(ans[selections[i]]);
         unansweredQues += 1;
       }
     }
+
+    if(i < questionsAns.length-1)
+    {
+        unansweredQues += questionsAns.length - i ;
+    }
+
+    console.log('Nothing');
+
+        console.log('numCorrect is : ' + numCorrect);
+
+        console.log('numNegative is : ' + numNegative);
+        
+        console.log('worngAns is : ' + worngAns);
+
+        console.log('unansweredQues is : ' + unansweredQues);
+
+
+
+    
 
     var finalScore = numCorrect - numNegative;
     score.append('Your Score :-  ' + finalScore + ' / ' + 'out of' +  
                  totalMarks + ' marks. <br> Marks for Correct Answers :- ' + numCorrect + '<br>  Marks cut for Incorrect Answers :- ' +  numNegative
                  + '<br> Correctly Answered Questions :- ' + correctAns + '<br> Incorrectly Answered Questions :- ' + worngAns
-                 + '<br> Unanswered Questions :-' + unansweredQues);
+                 + '<br> Unanswered Questions :- ' + unansweredQues);
     var x = document.getElementById('submitQuiz');
     x.style.display = "none";
     $('#next').hide();
