@@ -1,31 +1,28 @@
 
 
-    function selectradio(id){
-    
-      console.log('selectradio called');
+function selectradio(event){
+   console.log(event);
 
-        var $radio = $(this);
-        
-        // if this was previously checked
-        if ($radio.data('waschecked') == true)
-        {
-            console.log('waschecked is true');
-            document.getElementById(id).checked = false;
-            $radio.data('waschecked', false);
-        }
-        else
-        {
-            console.log('waschecked is false');
-            document.getElementById(id).checked = true;
-            $radio.data('waschecked', true);
-        }
-        
-        // remove was checked from other radios
-        $radio.siblings('input[name="rad"]').data('waschecked', false);
+
+
+
+      var $radio = $(event.target)       // if this was previously checked
+      if ($radio.data('waschecked') == true)
+      {
+          $radio.prop('checked', false);
+          $radio.data('waschecked', false);
+      }
+      else{
+          $radio.data('waschecked', true);        // remove was checked from other radio
+     }
+     // $radio.siblings('input[name="rad"]').data('waschecked', false);
+     $radio.closest("ul").find('input').each(function (index,elem){
+       if(elem != event.target){
+         $(elem).data('waschecked', false);
+       }
+     });
+
 }
-
-  
-
 (function() {
 
 
@@ -129,8 +126,9 @@
     if(quiz.is(':animated')) {        
       return false;
     }
+    if(questionCounter<questions.length){
     choose();
-    
+    }    
       questionCounter++;
       displayNext();
     
@@ -190,7 +188,7 @@
     var input = '';
     for (var i = 0; i < questions[index].choices.length; i++) {
       item = $('<li>');
-      input = '<input type="radio" name="answer" class="radioClass" id=' + i + ' value=' + i + ' onclick="selectradio('+i+')" />';
+      input = '<input type="radio" name="answer" class="radioClass" id=' + i + ' value=' + i + ' onclick="selectradio(event)" />';
       input += '<label for=' + i + '>' + questions[index].choices[i] + '</label>';
 
       item.append(input);
@@ -280,8 +278,9 @@ function getQuestions(test_id){
         isSubmit = 1;
         $('#timerCount').hide();
         $('#prev').hide();
-            choose();
-
+    if(questionCounter<questions.length){
+    choose();
+    }
 
        var test_id = $('#test_id_div').text();
         getAnswers(test_id);
@@ -341,7 +340,11 @@ function getAnswers(test_id){
 
     console.log('printing selections : ' + selections);
 
+    console.log('selections.length is : ' + selections.length);
+
     for (var i = 0; i < selections.length; i++) {
+
+      console.log('i is : ' + i);
 
         var ans = questions[i].choices;
         var userAns = ans[selections[i]];
