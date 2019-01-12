@@ -40,17 +40,8 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 20px;
 }
 
-.article-title {
-  color: #444444;
-}
-
-a.article-title:hover {
-  color: #428bca;
-  text-decoration: none;
-}
-
-.article-content {
-  white-space: pre-line;
+a.article-title {
+  color: #007bfe;
 }
 
 .article-img {
@@ -88,7 +79,7 @@ a.article-title:hover {
 }
 
 p {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
 }
 
 #title {

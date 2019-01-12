@@ -8,20 +8,21 @@
 <h1 class="mb-3 user-posts-heading"> Tests </h1>
   {% for test in tests %}
 
+
     <article class="media content-section">
       <div class="media-body">
         <div class="article-metadata">
-          <a class="mr-2" href="{{ url_for('all_tests') }}"> 
-            {{ test.test_name}}
-          </a>
+          <h2> <a class=" mr-2 article-title" href="{{ url_for('test', test_id=test.id) }}">
+            Test : {{ test.test_name }}
+           </a>
+          </h2
           <small class="text-muted">
             {{ test.date_posted.strftime('%Y-%m-%d') }}
           </small>
         </div>
-        <h2> <a class="article-title" href="{{ url_for('test', test_id=test.id) }}">
+        <p class="article-content">
             Category : {{ test.category }}
-           </a>
-        </h2>
+           </p>
         <p class="article-content">
          No:of Questions : {{ test.no_of_questions }}
         </p>
