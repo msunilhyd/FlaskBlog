@@ -8,7 +8,6 @@
 <h1 class="mb-3 user-posts-heading"> Tests </h1>
   {% for test in tests %}
 
-
     <article class="media content-section">
       <div class="media-body">
         <div class="article-metadata">
@@ -30,7 +29,7 @@
           Total Marks : {{ test.total_marks }}
         </p>
         <p class="article-content">
-          Time in minutes : {{ test.time_in_mins }}
+          Time : {{ (test.time_in_mins / 60)  | round(1, 'floor') }} hours 
         </p>
        
       </div>

@@ -40,6 +40,12 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 20px;
 }
 
+
+.floatRight{
+    float: right;
+}
+
+
 a.article-title {
   color: #007bfe;
 }
@@ -126,7 +132,7 @@ p {
     background-color: #DCDCDC;
     color: blue;
     margin: 12px 2px 0 2px;
-	left: 1%;
+	  left: 1%;
     cursor: pointer;
 }
 
