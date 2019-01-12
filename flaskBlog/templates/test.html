@@ -18,9 +18,7 @@
       <p class="article-content"> No:of Questions : {{ test.no_of_questions }}</p>
       <p class="article-content"> Total Marks : {{ test.total_marks }}</p>
       <p class="article-content"> Time : {{ (test.time_in_mins / 60)  | round(1, 'floor') }} hours </p>
-      <p class="article-content"> Test Prepared on : {{ test.date_posted }}</p>
-      <p class="article-content"> Test created by : {{ test.author.username }}</p>
-    
+          
     </div>
   </article>
 {% endblock content %}
