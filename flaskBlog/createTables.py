@@ -53,6 +53,7 @@ GRANT ALL PRIVILEGES ON kumardb.* TO 'kumaruser'@'localhost';
   ans  VARCHAR(20) NOT NULL
 );
 
+python manage.py db init
 python manage.py db migrate
 python manage.py db upgrade
 
@@ -67,6 +68,10 @@ if you get this erro :
 update user set is_admin = 1 where username = 'msunilhyd';
 
 update user set is_admin = 1 where username = 'bob';
+
+
+
+ALTER TABLE user ADD COLUMN is_admin INT DEFAULT 0;
 
 
 ALTER TABLE test

@@ -250,3 +250,16 @@ Start back the Supervisor
 
 		sudo service supervisor restart
 
+
+
+		sudo pkill -f supervisord
+		git pull --rebase
+		sudo service supervisor restart
+
+
+Activate the venv before installing any flask packages.
+python manage.py db init
+python manage.py db migrate
+python manage.py db upgrade
+
+
