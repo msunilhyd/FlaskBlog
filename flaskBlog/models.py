@@ -26,12 +26,14 @@ class Post(db.Model):
 
 class User(db.Model, UserMixin):
 	id = db.Column(db.Integer, primary_key=True)
-	username = db.Column(db.String(20), unique=True, nullable=False)
-	email = db.Column(db.String(20), unique=True, nullable=False)	
-	image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
-	password = db.Column(db.String(60), nullable=False)
+	username = db.Column(db.String(50), unique=True, nullable=False)
+	email = db.Column(db.String(50), unique=True, nullable=False)	
+	image_file = db.Column(db.String(50), nullable=False, default='default.jpg')
+	password = db.Column(db.String(100), nullable=False)
 	tests = db.relationship('Test', backref='author', lazy=True)
 	posts = db.relationship('Post', backref='author', lazy=True)
+	is_admin = db.Column(db.Integer, nullable=False, default=0)
+
 	
 	def get_id(self):
 		return (self.id)
@@ -43,8 +45,9 @@ class User(db.Model, UserMixin):
 
 class Test(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	test_name = db.Column(db.String(30), nullable=False)
-	category = db.Column(db.String(30))
+	test_name = db.Column(db.String(50), nullable=False)
+	category = db.Column(db.String(50))
+	instructions = db.Column(db.String(1000), nullable=False)
 	no_of_questions = db.Column(db.Integer, nullable=False)
 	total_marks = db.Column(db.Integer, nullable=False)
 	time_in_mins = db.Column(db.Integer, nullable=False, default=180)

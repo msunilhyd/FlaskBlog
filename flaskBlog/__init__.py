@@ -26,8 +26,7 @@ mysql = MySQL(app)
 json = FlaskJSON(app)
 
 
-
-from flaskBlog.models import User, Post
+from flaskBlog.models import User, Post, Test, Question, TestQuestion, UserTest
 
 
 db.create_all()

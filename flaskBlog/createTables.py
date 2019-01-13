@@ -42,6 +42,37 @@ GRANT ALL PRIVILEGES ON kumardb.* TO 'kumaruser'@'localhost';
   ans  VARCHAR(20) NOT NULL
 );
 
+python manage.py db migrate
+python manage.py db upgrade
+
+if you get this erro :  
+  ERROR [alembic.env] Target database is not up to date.
+
+  run:
+  python manage.py db stamp heads
+  
+
+
+update user set is_admin = 1 where username = 'msunilhyd';
+
+ALTER TABLE test
+MODIFY COLUMN test_name varchar(100);
+
+ALTER TABLE test
+MODIFY COLUMN category varchar(100);
+
+
+ALTER TABLE user
+MODIFY COLUMN username varchar(100);
+
+ALTER TABLE user
+MODIFY COLUMN email varchar(100);
+
+ALTER TABLE user
+MODIFY COLUMN password varchar(100);
+
+
+
 
 
 ALTER TABLE questions MODIFY COLUMN question VARCHAR(1000);
