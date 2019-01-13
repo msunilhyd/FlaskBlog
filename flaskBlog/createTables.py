@@ -1,9 +1,20 @@
 
 
+
+
 Steps for deployment to Linode :
 
 ssh root@139.162.34.166 
 
+
+instructions for a test:
+
+1. Click on the radio button out of the 4 options to answer a question.
+2. To de-select an answer, click on the answered radio button.
+3. You will see 'Reached the end of the test', after the last question of the test.
+4.Time is indication in the top right corner for the test.
+5.Test will auto submit once, time is up.
+6.All the Best.
 
 
     CREATE TABLE user
@@ -50,10 +61,13 @@ if you get this erro :
 
   run:
   python manage.py db stamp heads
-  
+
 
 
 update user set is_admin = 1 where username = 'msunilhyd';
+
+update user set is_admin = 1 where username = 'bob';
+
 
 ALTER TABLE test
 MODIFY COLUMN test_name varchar(100);

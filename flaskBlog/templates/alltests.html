@@ -5,6 +5,17 @@
 
 {% if current_user.is_authenticated %}
 
+
+
+       
+        {% if current_user.is_admin %}
+
+        <a class="btn btn-sm mt-1 mb-1 floatRight btn-primary" href="{{ url_for('new_test') }}">Add New Test</a>
+
+        {% endif  %}
+
+
+
 <h1 class="mb-3 user-posts-heading"> Tests </h1>
   {% for test in tests %}
 

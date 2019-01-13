@@ -130,7 +130,7 @@ def new_post():
 def new_test():
 	form = TestForm()
 	if form.validate_on_submit():
-		test = Test(test_name=form.test_name.data, category=form.category.data, no_of_questions=form.no_of_questions.data, total_marks=form.total_marks.data, time_in_mins=form.time_in_mins.data, author=current_user)
+		test = Test(test_name=form.test_name.data, category=form.category.data, no_of_questions=form.no_of_questions.data, instructions=form.instructions.data,total_marks=form.total_marks.data, time_in_mins=form.time_in_mins.data, author=current_user)
 		db.session.add(test)
 		db.session.commit()
 		test = Test.query.filter_by(test_name=form.test_name.data).order_by(Test.date_posted.desc()).first()
@@ -210,9 +210,6 @@ def take_test(test_id):
     .filter(TestQuestion.test_id == test_id)
     .filter(TestQuestion.question_id == Question.id)
     .all())
-	print('printing q with joins below')
-	print(q)
-	print(question)
 	print("result question len", len(question.all()))
 	if(len(question.all()) == 0):
 		return redirect(url_for('new_test_question', test_id=test_id))
@@ -366,7 +363,6 @@ def test_get_questions():
 		empDict = {
 		'question': emp.Question.question_content,
 		'choices' : choices,
-		'correctAnswer': emp.Question.ans,
 		'positive_marks' : emp.Question.positive_marks,
 		'negative_marks' : emp.Question.negative_marks
 		}

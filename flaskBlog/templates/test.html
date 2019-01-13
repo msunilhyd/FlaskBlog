@@ -12,8 +12,12 @@
         <h2 class="article-title"> Test Name : {{ test.test_name }}</h2>
         <a class="btn btn-sm mt-1 mb-1 floatRight btn-primary" href="{{ url_for('take_test', test_id=test.id) }}">Take Test</a>
        
+        {% if current_user.is_admin %}
+
+
         <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('show_questions', test_id=test.id) }}">Add Questions</a>
-      
+        {% endif  %}
+
       <p class="article-content"> Category : {{ test.category }}</p>
       <p class="article-content"> No:of Questions : {{ test.no_of_questions }}</p>
       <p class="article-content"> Total Marks : {{ test.total_marks }}</p>

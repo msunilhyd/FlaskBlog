@@ -41,7 +41,6 @@ class LoginForm(FlaskForm):
 	submit = SubmitField('Log in')
 
 
-
 class UpdateAccountForm(FlaskForm):
 
 	username = StringField('Username', 
@@ -64,8 +63,6 @@ class UpdateAccountForm(FlaskForm):
 			if user:
 				raise ValidationError('That email is already taken, Please choose a different one')
 
-
-
 class PostForm(FlaskForm):
 	title = StringField('Title', validators=[DataRequired()])
 	content = TextAreaField('Content', validators=[DataRequired()])
@@ -73,13 +70,13 @@ class PostForm(FlaskForm):
 	submit = SubmitField('Post')
 
 
-
 class TestForm(FlaskForm):
 	test_name = StringField('Test Name', validators=[DataRequired()])
-	category = StringField('Test category')
+	category = StringField('Test category', validators=[DataRequired()])
 	no_of_questions = IntegerField('Total No:of Questions', validators=[DataRequired()])
 	total_marks = IntegerField('Total Marks', validators=[DataRequired()])
 	time_in_mins = IntegerField('Test time in Minutes', validators=[DataRequired()])
+	instructions = TextAreaField('Instructions', validators=[DataRequired()])
 	submit = SubmitField('Submit')
 
 
