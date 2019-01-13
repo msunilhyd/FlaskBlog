@@ -264,3 +264,10 @@ python manage.py db migrate
 python manage.py db upgrade
 
 
+if you get this erro :  
+  ERROR [alembic.env] Target database is not up to date.
+
+  run:
+  python manage.py db stamp heads
+
+
