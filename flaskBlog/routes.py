@@ -3,7 +3,7 @@ import secrets
 from flask import render_template, url_for, flash, redirect, json,request, abort,jsonify, json
 from flaskBlog import app, db, bcrypt, mysql
 from flaskBlog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, TestForm, TestQuestionForm
-from flaskBlog.models import User, Post, Test, TestQuestion, Question
+from flaskBlog.models import User, Post, Test, TestQuestion, Question, UserTest
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 
@@ -302,31 +302,6 @@ def rate_movie():
     	flash('Movie Rated', 'success')
     	return redirect(url_for('mainTestFileUpload'))
 
-myQuestions = [
-    {
-      "question": "Who is the strongest?",
-        "a": "Superman",
-        "b": "The Terminator",
-        "c": "Waluigi, obviously",
-        "d": "Sunil and Jujju"  
-    },
-    {
-      "question": "What is the best site ever created?",
-        "a": "SitePoint",
-        "b": "Simple Steps Code",
-        "c": "Trick question; they're both the best", 
-        "d": "Our JEE Quiz site"  
-
-    },
-    {
-      "question": "Where is Waldo really?",
-        "a": "Antarctica",
-        "b": "Exploring the Pacific Ocean",
-        "c": "Sitting in a tree",
-        "d": "Minding his own business, so stop asking"
-    }
-  ];
-
 
 @app.route("/alltests", methods=['GET'])
 def all_tests():
@@ -392,28 +367,28 @@ def test_get_answers():
 		empList.append(empDict)
 	return json.dumps(empList)
 
-@app.route("/getAnswers/", methods=['GET'])
-def getAnswers():
-	print("Hey")
-	cur = mysql.connect().cursor()
-	cur.execute('''SELECT question,ans FROM questions''')
-	rv = cur.fetchall()
-	empList = []
-	for emp in rv:
-		print("Hello");
-		print(emp[0]);
-		empDict = {
-		'question': emp[0],
-		'correctAnswer': emp[5]
-		}
-		empList.append(empDict)
-	return json.dumps(empList)
+
+@app.route("/test_update_user_score/", methods=['GET','POST'])
+def test_update_user_score():
+	print("Hey test_get_answers called")
+	test_id = request.form['test_id']
+	user_id = request.form['user_id']
+	user_score = request.form['user_score']
+	positive_score = request.form['positive_score']
+	negative_score = request.form['negative_score']
+	correct_answers = request.form['correct_answers']
+	wrong_answers = request.form['wrong_answers']
+	no_answers = request.form['no_answers']
+	
+	
+	print('returning from test_update_user_score')
+	
+	usertest = UserTest(test_id=test_id, user_id=user_id, user_score=user_score, positive_score=positive_score,negative_score=negative_score, correct_answers=correct_answers, wrong_answers=wrong_answers,no_answers=no_answers)
+	db.session.add(usertest)
+	db.session.commit()
+
+	return "Succesfully updated user score"
 
 
 
 
-
-@app.route('/getQuestions/',methods=['GET','POST'])
-def getQuestions():
-	questions =  myQuestions
-	return jsonify(qns=myQuestions)

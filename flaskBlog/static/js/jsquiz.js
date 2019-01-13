@@ -2,10 +2,6 @@
 
 function selectradio(event){
    console.log(event);
-
-
-
-
       var $radio = $(event.target)       // if this was previously checked
       if ($radio.data('waschecked') == true)
       {
@@ -315,12 +311,12 @@ function getAnswers(test_id){
 
 
 
-    var numCorrect = 0;
-    var numNegative = 0;
+    var positive_score = 0;
+    var negative_score = 0;
 
-    var correctAns = 0;
-    var worngAns = 0;
-    var unansweredQues = 0;
+    var no_of_correct_ans_ques = 0;
+    var no_of_wrong_ans_ques = 0;
+    var no_of_not_ans_ques = 0;
 
 
   // Computes score and returns a paragraph element to be displayed
@@ -349,63 +345,77 @@ function getAnswers(test_id){
         var ans = questions[i].choices;
         var userAns = ans[selections[i]];
         console.log(' userAns is : ' + userAns);
-        console.log(' correctAns is : ' + questionsAns[i].correctAnswer);
+        console.log(' correctAnswer is : ' + questionsAns[i].correctAnswer);
 
       if (userAns === questionsAns[i].correctAnswer) {
-        numCorrect += questionsAns[i].positive_marks;
-        correctAns += 1;
-        console.log('numCorrect is : ' + numCorrect);
+        positive_score += questionsAns[i].positive_marks;
+        no_of_correct_ans_ques += 1;
+        console.log('positive_score is : ' + positive_score);
         console.log("User Answer is correct, adding to score");
       }
       else if(userAns !== undefined)
       {
-        numNegative += questionsAns[i].negative_marks;
-        worngAns += 1;
+        negative_score += questionsAns[i].negative_marks;
+        no_of_wrong_ans_ques += 1;
       }
       else
       {
-        console.log('unansweredQues below');
+        console.log('no_of_not_ans_ques below');
         console.log(ans[selections[i]]);
-        unansweredQues += 1;
+        no_of_not_ans_ques += 1;
       }
     }
 
 
     if(i < questionsAns.length-1)
     {
-        unansweredQues += questionsAns.length - i ;
+        no_of_not_ans_ques += questionsAns.length - i ;
     }
 
-    var finalScore = numCorrect - numNegative;
+    var finalScore = positive_score - negative_score;
     score.append('Your Score :-  ' + finalScore + ' / ' + 'out of' +  
-                 totalMarks + ' marks. <br> Marks for Correct Answers :- ' + numCorrect + '<br>  Marks cut for Incorrect Answers :- ' +  numNegative
-                 + '<br> Correctly Answered Questions :- ' + correctAns + '<br> Incorrectly Answered Questions :- ' + worngAns
-                 + '<br> Unanswered Questions :- ' + unansweredQues);
+                 totalMarks + ' marks. <br> Marks for Correct Answers :- ' + positive_score + '<br>  Marks cut for Incorrect Answers :- ' +  negative_score
+                 + '<br> Correctly Answered Questions :- ' + no_of_correct_ans_ques + '<br> Incorrectly Answered Questions :- ' + no_of_wrong_ans_ques
+                 + '<br> Unanswered Questions :- ' + no_of_not_ans_ques);
     var x = document.getElementById('submitQuiz');
     x.style.display = "none";
     $('#next').hide();
 
+    updateUserScore(finalScore, positive_score, negative_score, no_of_correct_ans_ques, no_of_wrong_ans_ques, no_of_not_ans_ques);
     return score;
-  }
+  }  
 
-  $('input[name="answer"]').bind('click',function(e){
-      debugger;
-      alert('hi');
-        var radio = $(this);
-        
-        // if this was previously checked
-        if (radio.prop('checked') == true)
-        {
-            radio.prop('checked', false);
-        }
-        else
-            radio.prop('checked', true);
-        
-        // remove was checked from other radios
-        //$radio.siblings('input[name="rad"]').data('waschecked', false);
-    });
 
-  
+function updateUserScore( finalScore, positive_score, negative_score, no_of_correct_ans_ques, no_of_wrong_ans_ques, no_of_not_ans_ques){
+
+  console.log("updateUserScore called");
+  var test_id = $('#test_id_div').text();
+  console.log("test_id is" + test_id);
+  test_id = test_id.replace(/ /g,'');
+  var user_id = $('#user_id_div').text();
+  user_id = user_id.replace(/ /g,'');
+
+
+
+            $.ajax({
+            url: "/test_update_user_score/",
+            type: "POST",
+            data: {"test_id":test_id, "user_id":user_id, "user_score":finalScore,
+             "positive_score":positive_score, "negative_score":negative_score, "correct_answers":no_of_correct_ans_ques,
+            "wrong_answers":no_of_wrong_ans_ques, 
+             "no_answers":no_of_not_ans_ques},
+            success: function(data) {
+        console.log("Printing response data.");
+        console.log(data);
+            let parsedData = JSON.parse(data);
+            questions = parsedData;
+                displayNext();
+            },
+            error: function(data) {
+                alert("Error getting questions from server");
+            }
+        }); 
+}
 
 
 })();
