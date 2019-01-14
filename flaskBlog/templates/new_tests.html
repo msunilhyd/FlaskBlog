@@ -10,16 +10,19 @@
 	</head>
    	 <div id='container' class='container'>
 			<div id='title'>
-				<h1>{{ test_name }}</h1>
+				<h1>{{ test.test_name }}</h1>
 			</div>
         			<span id="timerCount" class="timerCount"></span>
    			<br/>
 
-        <div id='total_marks_div'> {{ total_marks }} </div>
+
+        <div id='test_instr_div'> {{ test.instructions }} </div>
+
+        <div id='total_marks_div'> {{ test.total_marks }} </div>
         
 
-        <div id='test_id_div'> {{ test_id }} </div>
-        <div id='time_in_mins_div'> {{ time_in_mins }} </div>
+        <div id='test_id_div'> {{ test.id }} </div>
+        <div id='time_in_mins_div'> {{ test.time_in_mins }} </div>
         <div id='user_id_div'> {{ current_user.id }} </div>
 
 

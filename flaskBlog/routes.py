@@ -147,7 +147,7 @@ def new_test():
 def new_test_question(test_id):
 	form = TestQuestionForm()
 	if form.validate_on_submit():
-		current_question = Question(question_content=form.question_content.data, a=form.a.data, b=form.b.data, c=form.c.data, d=form.d.data, ans=form.ans.data,positive_marks=form.positive_marks.data, negative_marks=form.negative_marks.data)
+		current_question = Question(section=form.section.data,question_content=form.question_content.data, a=form.a.data, b=form.b.data, c=form.c.data, d=form.d.data, ans=form.ans.data,positive_marks=form.positive_marks.data, negative_marks=form.negative_marks.data)
 		db.session.add(current_question)
 		db.session.commit()
 		question = Question.query.filter_by(question_content=form.question_content.data).order_by(Question.date_posted.desc()).first()
@@ -216,7 +216,7 @@ def take_test(test_id):
 
 	else:
 		print("Questions ready to take the test")
-		return render_template('new_tests.html', title="Taking Test", legend='Take test',test_id=test_id, time_in_mins=test.time_in_mins, test_name=test.test_name, total_marks=test.total_marks)
+		return render_template('new_tests.html', title="Taking Test", legend='Take test', test = test)
 
 	flash('Your test is not empty! You can add more questions', 'success')
 	return redirect(url_for('new_test_question', test_id=test_id))

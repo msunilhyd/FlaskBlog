@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, BooleanField, PasswordField, SubmitField, TextAreaField, IntegerField
+from wtforms import StringField, BooleanField, PasswordField, SubmitField, TextAreaField, IntegerField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flaskBlog.models import User
 from flask_login import current_user
@@ -81,6 +81,8 @@ class TestForm(FlaskForm):
 
 
 class TestQuestionForm(FlaskForm):
+	section = SelectField('Section', choices = [('Maths', 'Maths'), 
+      ('Physics', 'Physics'), ('Chemistry', 'Chemistry')])
 	question_content = StringField('Question', validators=[DataRequired()])
 	a = StringField('A', validators=[DataRequired()])
 	b = StringField('B', validators=[DataRequired()])

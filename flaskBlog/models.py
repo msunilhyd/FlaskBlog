@@ -59,6 +59,7 @@ class Test(db.Model):
 
 class Question(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
+	section = db.Column(db.String(100), nullable=False)
 	question_content = db.Column(db.String(500), nullable=False)
 	a = db.Column(db.String(100), nullable=False)
 	b = db.Column(db.String(100), nullable=False)

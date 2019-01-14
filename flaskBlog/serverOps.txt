@@ -271,3 +271,10 @@ if you get this erro :
   python manage.py db stamp heads
 
 
+
+alembic.util.CommandError: Can't locate revision identified by '31b8ab83c7d'
+
+
+https://stackoverflow.com/questions/32311366/alembic-util-command-error-cant-find-identifier
+
+
