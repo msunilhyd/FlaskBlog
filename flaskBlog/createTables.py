@@ -1,5 +1,58 @@
 
+  q = (db.session.query(Test, UserTest)
+    .filter(Test.id == UserTest.test_id)
+    .filter(UserTest.user_id == user_id)
+    .all())
+  print('printing the left join of test and user_test')
+  print(q)
+  print('len of q is : ')
+  print(len(q))
+  tests = Test.query.order_by(Test.date_posted.desc())
+  print('len of tests is : ')
+  print(tests.count())
 
+  print('type of q is : ')
+  print(type(q))
+  
+  print('type of tests is : ')
+  print(type(tests))
+
+  for test in tests:
+    print('Hey')
+    print(test)
+
+  for test in q:
+    print('Hello')
+    print(test)
+
+  q = (db.session.query(Test.id, UserTest.test_id)
+    .outerjoin(UserTest, Test.id == UserTest.test_id)
+    .filter(UserTest.user_id == user_id))
+
+
+  for test in q:
+    print('Ayyo Rama')
+    print(test)
+
+  cur = mysql.connect().cursor()
+  cur.execute('''select test.id, user_test.user_id, user_test.test_id, user_test.user_score from test left join user_test on test.id = user_test.test_id and user_test.user_id=1;
+''')
+  rv = cur.fetchall()
+  for emp in rv:
+    for test in tests:
+      if test.id == emp[2]:
+        print('Chekkey')
+        print(emp[0])
+        print(emp[1])
+        print(emp[2])
+        print(emp[3])
+        test.user_score = emp[3]
+      else:
+        test.user_score = None
+      print(test.user_score)
+
+  for test in tests:
+    if test.user_score is not None:
 
 
 Steps for deployment to Linode :
@@ -16,6 +69,12 @@ instructions for a test:
 5.Test will auto submit once, time is up.
 6.All the Best.
 
+
+
+update test set instructions = '1. Click on the radio button out of the 4 options to answer a question. <br />2. To de-select an answer, click on the answered radio button.<br /> 3. You will see ''Reached the end of the test'', after the last question of the test.</br> 4.Time is indication in the top right corner for the test.</br> 5.Test will auto submit once, time is up. 6.All the Best.' where id = 9;
+
+
+update test set instructions = '1. Click on the radio button out of the 4 options to answer a question. 2. To de-select an answer, click on the answered radio button. 3. You will see ''Reached the end of the test'', after the last question of the test. 4.Time is indication in the top right corner for the test. 5.Test will auto submit once, time is up. 6.All the Best.' where id = 9;
 
     CREATE TABLE user
 (

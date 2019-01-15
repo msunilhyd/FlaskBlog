@@ -39,14 +39,12 @@ function selectradio(event){
  $('#count').hide();
 
 
-
-
   // Click handler for the 'startQuiz' button
   $('#startQuiz').on('click', function (e) {
-     $('#startQuiz').hide();
-    $('#submitQuiz').show();
-
     
+    $('#startQuiz').hide();
+    $('#submitQuiz').show();
+    $('#test_instr_div').hide();
 
      var t = $('#time_in_mins_div').text();
      console.log('from js time_in_mins is : ' + t);
@@ -56,7 +54,6 @@ function selectradio(event){
      console.log("printing test_id before ajax" + test_id);
 
      getQuestions(test_id);
-
 
         function secondsToTime(secs)
         {
@@ -76,8 +73,6 @@ function selectradio(event){
             return  hours  + " hours " + minutes + " minutes " + seconds + " seconds";
 
         }
-
-        console.log(secondsToTime(170 * 60))
 
         function timer(count,str) {
           console.log("called");
@@ -165,9 +160,15 @@ function selectradio(event){
       id: 'question'
     });
     
-    var header = $('<h2>Question ' + (index + 1) + ':</h2>');
+    var header = $('<h2>Question ' + (index + 1) + ' : ' + questions[index].section + '</h2>');
     qElement.append(header);
     
+
+    console.log('printing question below : ');
+    console.log(questions[index].question);
+
+    console.log(questions[index].section);
+
     var question = $('<p>').append(questions[index].question);
     qElement.append(question);
     
@@ -201,8 +202,6 @@ function selectradio(event){
 
 function getQuestions(test_id){
 
-  console.log("getQuestions called");
-  console.log("test_id is" + test_id);
   test_id = test_id.replace(/ /g,'');
 
             $.ajax({
@@ -210,8 +209,6 @@ function getQuestions(test_id){
             type: "POST",
             data: {"test_id":test_id},
             success: function(data) {
-        console.log("Printing response data.");
-        console.log(data);
             let parsedData = JSON.parse(data);
             questions = parsedData;
                 displayNext();
@@ -225,14 +222,8 @@ function getQuestions(test_id){
 
   // Displays next requested element
   function displayNext() { 
-      console.log("Printing questions");
-      console.log(questions);
-     
     quiz.fadeOut(function() {
       $('#question').remove();
-      
-      console.log("Printing questionCounter below");
-
       if(questionCounter < questions.length){
                 $('#end_of_test_div').hide();
               console.log('in if case : ' + questionCounter);

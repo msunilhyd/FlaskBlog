@@ -1,6 +1,6 @@
 import os
 import secrets
-from flask import render_template, url_for, flash, redirect, json,request, abort,jsonify, json
+from flask import render_template, url_for, flash, redirect, json,request, abort,jsonify, json, Markup
 from flaskBlog import app, db, bcrypt, mysql
 from flaskBlog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, TestForm, TestQuestionForm
 from flaskBlog.models import User, Post, Test, TestQuestion, Question, UserTest
@@ -26,7 +26,6 @@ def user_posts(username):
 @app.route("/home")
 def home():	
 	posts = Test.query.order_by(Test.date_posted.desc())
-	print(posts)
 	return render_template('home.html', posts=posts)
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -166,13 +165,28 @@ def new_test_question(test_id):
 @app.route("/tests")
 def tests():	
 	tests = Test.query.order_by(Test.date_posted.desc())
-	print(tests)
 	return render_template('alltests.html', tests=tests)
 
 @app.route("/test/<int:test_id>")
 def test(test_id):
+	user_id = request.args.get('user_id', None)
 	test = Test.query.get_or_404(test_id)
-	return render_template('test.html', test=test)
+	exists = db.session.query(
+		db.session.query(UserTest).filter_by(test_id=test_id, user_id=user_id).exists()
+		).scalar()
+	
+	question = UserTest.query.filter_by(test_id=test_id)
+	cur = mysql.connect().cursor()
+	cur.execute('''SELECT user_score FROM user_test WHERE test_id = %s AND user_id = %s''', (test_id, user_id))
+
+	rv = cur.fetchall()
+	if(len(rv) > 0):
+		exists = True
+		user_score = rv[0][0]
+		return render_template('test.html', test=test, exists=exists, user_score=user_score)
+	else:
+		exists = False
+		return render_template('test.html', test=test, exists=exists)
 
 
 @app.route("/post/<int:post_id>")
@@ -187,9 +201,6 @@ def post(post_id):
 def show_questions(test_id):
 	test = Test.query.get_or_404(test_id)
 	question = TestQuestion.query.filter_by(test_id=test_id)
-	print('printing question below')
-	print(question)
-	print("result question len", len(question.all()))
 	if(len(question.all()) == 0):
 		return redirect(url_for('new_test_question', test_id=test_id))
 
@@ -210,7 +221,8 @@ def take_test(test_id):
     .filter(TestQuestion.test_id == test_id)
     .filter(TestQuestion.question_id == Question.id)
     .all())
-	print("result question len", len(question.all()))
+	test.instructions = Markup(test.instructions)
+
 	if(len(question.all()) == 0):
 		return redirect(url_for('new_test_question', test_id=test_id))
 
@@ -339,7 +351,8 @@ def test_get_questions():
 		'question': emp.Question.question_content,
 		'choices' : choices,
 		'positive_marks' : emp.Question.positive_marks,
-		'negative_marks' : emp.Question.negative_marks
+		'negative_marks' : emp.Question.negative_marks,
+		'section' : emp.Question.section
 		}
 		choices = []
 		empList.append(empDict)
