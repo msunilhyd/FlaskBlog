@@ -1,3 +1,6 @@
+user = d@d.com/admin@123
+
+
 
   q = (db.session.query(Test, UserTest)
     .filter(Test.id == UserTest.test_id)
