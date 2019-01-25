@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flaskext.mysql import MySQL
 from flask_json import FlaskJSON, JsonError, json_response
+from flask_admin import Admin
 
 app = Flask(__name__)
 
@@ -24,6 +25,7 @@ login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
 mysql = MySQL(app)
 json = FlaskJSON(app)
+admin = Admin(app)
 
 
 from flaskBlog.models import User, Post, Test, Question, TestQuestion, UserTest

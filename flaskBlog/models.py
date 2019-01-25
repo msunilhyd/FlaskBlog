@@ -1,7 +1,9 @@
-from flaskBlog import db, login_manager
+from flaskBlog import db, login_manager, admin
 from datetime import datetime
 from flask_login import UserMixin
 from sqlalchemy.sql import func
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
 
 
@@ -77,9 +79,10 @@ class TestQuestion(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	test_id = db.Column(db.Integer, db.ForeignKey('test.id'), nullable=False)
 	question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
+	questions = db.relationship('Question', backref='NameOfTest', lazy=True)
 	
 	def __repr__(self):
-		return "TestQuestion('{}','{}''{}')".format(self.id, self.test_id, self.question_id)
+		return "TestQuestion('{}','{}')".format(self.test_id, self.id)
 
 
 class UserTest(db.Model):
@@ -97,3 +100,12 @@ class UserTest(db.Model):
 
 	def __repr__(self):
 		return "UserTest('{}','{}''{}')".format(self.id, self.test_id, self.user_id, self.user_score)
+
+
+
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Post, db.session))
+admin.add_view(ModelView(Test, db.session))
+admin.add_view(ModelView(Question, db.session))
+admin.add_view(ModelView(TestQuestion, db.session))
+admin.add_view(ModelView(UserTest, db.session))

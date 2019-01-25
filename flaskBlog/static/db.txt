@@ -1,3 +1,9 @@
 ALTER TABLE post MODIFY content text CHARACTER SET utf8;
 
 ALTER TABLE post CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+
+
+
+ALTER TABLE question MODIFY question_content text CHARACTER SET utf8;
+
+ALTER TABLE question CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
