@@ -12,7 +12,8 @@ import re
 
 @app.route("/")
 def main():
-	return render_template('index.html')
+	tests = Test.query.order_by(Test.date_posted.desc())
+	return render_template('alltests.html', tests=tests)
 
 @app.route("/user/<string:username>")
 def user_posts(username):	
@@ -26,8 +27,8 @@ def user_posts(username):
 
 @app.route("/home")
 def home():	
-	posts = Test.query.order_by(Test.date_posted.desc())
-	return render_template('home.html', posts=posts)
+	tests = Test.query.order_by(Test.date_posted.desc())
+	return render_template('alltests.html', tests=tests)
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -66,7 +67,7 @@ def login():
 @app.route("/logout")
 def logout():
 	logout_user()
-	return render_template('index.html')
+	return render_template('home.html')
 
 
 
@@ -153,15 +154,11 @@ def new_test_question(test_id):
 		db.session.add(current_question)
 		db.session.commit()
 		question = Question.query.filter_by(question_content=form.question_content.data).order_by(Question.date_posted.desc()).first()
-		print("Printing questionId below : ")
-		print(question.id);
 		flash("You Question has been created", "success")
-		print("Redirecting to home : ")
 		testQuestion = TestQuestion(test_id=test_id, question_id=question.id)
 		db.session.add(testQuestion)
 		db.session.commit()
 		return redirect(url_for('tests'))
-	print("QuestionForm Not Validated : ")
 	return render_template('create_test_questions.html', title="New Test Question", form=form, legend='New test Question')
 
 
@@ -173,24 +170,10 @@ def tests():
 @app.route("/test/<int:test_id>")
 def test(test_id):
 	user_id = request.args.get('user_id', None)
-	test = Test.query.get_or_404(test_id)
-	exists = db.session.query(
-		db.session.query(UserTest).filter_by(test_id=test_id, user_id=user_id).exists()
-		).scalar()
-	
-	question = UserTest.query.filter_by(test_id=test_id)
-	cur = mysql.connect().cursor()
-	cur.execute('''SELECT user_score FROM user_test WHERE test_id = %s AND user_id = %s''', (test_id, user_id))
+	test = Test.query.get_or_404(test_id)	
+	usertest = UserTest.query.filter_by(test_id=test_id, user_id=user_id).first()
 
-	rv = cur.fetchall()
-	if(len(rv) > 0):
-		exists = True
-		user_score = rv[0][0]
-		return render_template('test.html', test=test, exists=exists, user_score=user_score)
-	else:
-		exists = False
-		return render_template('test.html', test=test, exists=exists)
-
+	return render_template('test.html', test=test, usertest=usertest)
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
@@ -334,7 +317,6 @@ FROM questions;
 
 @app.route("/test_get_questions/", methods=['GET','POST'])
 def test_get_questions():
-	print("Hey")
 	test_id = request.form['test_id']
 	
 	q = (db.session.query(TestQuestion, Question)
@@ -366,7 +348,6 @@ def test_get_questions():
 
 @app.route("/test_get_answers/", methods=['GET','POST'])
 def test_get_answers():
-	print("Hey test_get_answers called")
 	test_id = request.form['test_id']
 	
 	q = (db.session.query(TestQuestion, Question)
@@ -386,7 +367,6 @@ def test_get_answers():
 
 @app.route("/test_update_user_score/", methods=['GET','POST'])
 def test_update_user_score():
-	print("Hey test_get_answers called")
 	test_id = request.form['test_id']
 	user_id = request.form['user_id']
 	user_score = request.form['user_score']
@@ -395,11 +375,9 @@ def test_update_user_score():
 	correct_answers = request.form['correct_answers']
 	wrong_answers = request.form['wrong_answers']
 	no_answers = request.form['no_answers']
+	attempted_ques = request.form['no_of_attempted_ans_ques']
 	
-	
-	print('returning from test_update_user_score')
-	
-	usertest = UserTest(test_id=test_id, user_id=user_id, user_score=user_score, positive_score=positive_score,negative_score=negative_score, correct_answers=correct_answers, wrong_answers=wrong_answers,no_answers=no_answers)
+	usertest = UserTest(test_id=test_id, user_id=user_id,user_score=user_score, positive_score=positive_score,negative_score=negative_score, correct_answers=correct_answers,wrong_answers=wrong_answers,no_answers=no_answers, attempted_ques=attempted_ques )
 	db.session.add(usertest)
 	db.session.commit()
 

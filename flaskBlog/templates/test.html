@@ -1,33 +1,56 @@
 {% extends "layout.html" %}
-{% block content %}
+{% block app_content %}
+
   <article class="media content-section">
     <div class="media-body">
-      <div class="article-metadata">
-        <a class="mr-2" href="{{ url_for('user_posts', username=test.author.username) }}">{{ test.author.username }}</a>
-        <small class="text-muted">{{ test.date_posted.strftime('%Y-%m-%d') }}</small>
-
-     
-      </div>
      
         <h2 class="article-title"> Test Name : {{ test.test_name }}</h2>
-
-        {% if exists == True %}
-          <a class="btn btn-sm mt-1 mb-1 floatRight btn-primary disabled = "disabled"" href="{{ url_for('take_test', test_id=test.id) }}">You have taken this test, 
-            Your score is :- {{ user_score }} / {{ test.total_marks }} 
-          </a>
-        {% else %}  
-          <a class="btn btn-sm mt-1 mb-1 floatRight btn-primary" href="{{ url_for('take_test', test_id=test.id) }}">Take Test</a>
-        {% endif  %}
-
-        {% if current_user.is_admin %}
-        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('show_questions', test_id=test.id) }}">Add Questions</a>
-        {% endif  %}
 
       <p class="article-content"> Category : {{ test.category }}</p>
       <p class="article-content"> No:of Questions : {{ test.no_of_questions }}</p>
       <p class="article-content">Total Marks : {{ test.total_marks }} </p>
       <p class="article-content"> Time : {{ (test.time_in_mins / 60)  | round(1, 'floor') }} hours </p>
+
+
+      {% if usertest == None %}
           
+          <a class="btn taken-test-btn btn-sm mt-1 mb-1 btn-primary" href="{{ url_for('take_test', test_id=test.id) }}">Take Test</a>
+
+      {% else %}  
+          <p class="article-content taken-test-p"> Test taken, Your score was :- {{ user_score }} / {{ test.total_marks }} </p>
+
+          <table style="width:auto">
+            <tr>
+              <th>Total</th>
+              <th>Your Score</th> 
+              <th>Postive Marks</th>
+              <th>Negative Marks</th>
+            </tr>
+            <tr>
+              <td>{{ test.total_marks }}</td>
+              <td>{{ usertest.user_score }}</td>
+              <td>{{ usertest.positive_score }}</td>
+              <td>{{ usertest.negative_score }}</td>
+            </tr>
+            <tr>
+              <td>Eve</td>
+              <td>Jackson</td>
+              <td>94</td>
+            </tr>
+            <tr>
+              <td>John</td>
+              <td>Doe</td>
+              <td>80</td>
+            </tr>
+          </table>
+
+      {% endif  %}
+
+
+        {% if current_user.is_admin %}
+        <a class="btn add-ques-btn" href="{{ url_for('show_questions', test_id=test.id) }}">Add Questions</a>
+        {% endif  %}
+
     </div>
   </article>
-{% endblock content %}
+{% endblock app_content %}

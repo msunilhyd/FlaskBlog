@@ -3,7 +3,7 @@
 
 
 
-{% block content %}
+{% block app_content %}
 {% if current_user.is_authenticated %}
 
 	{% for post in posts %}
@@ -34,13 +34,13 @@
 
 	{% else %}
 
-			<div class="media-body">
+			<div>
+			<div class="logout-class"> Thank you, Please visit us again </div>
 				<div class="article-metadata">
-				<h2> Please Login ! </h2>
 				</div>
 			</div>
 
 
 {% endif  %}
 
-{% endblock content %}
+{% endblock app_content %}

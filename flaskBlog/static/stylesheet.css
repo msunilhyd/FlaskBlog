@@ -2,18 +2,18 @@ body {
     font-family: Open Sans;
 }
 
-h1 {
-    text-align: center;
-}
-
-
 body {
   background: #fafafa;
   color: #333333;
+  font-size: 22px;
 }
 
 h1, h2, h3, h4, h5, h6 {
   color: #444444;
+}
+
+.logout-class{
+  text-align: center
 }
 
 .bg-steel {
@@ -24,6 +24,23 @@ h1, h2, h3, h4, h5, h6 {
   color: #cbd5db;
 }
 
+
+.taken-test-p{
+  color: #00BFFF;
+}
+
+.navbar-nav{
+  color: #ffffff;  
+}
+
+.nav-item {
+  color: #ffffff;
+}
+
+.navbar-nav.li.a{
+  color: #ffffff;  
+}
+
 .site-header .navbar-nav .nav-link:hover {
   color: #ffffff;
 }
@@ -31,6 +48,22 @@ h1, h2, h3, h4, h5, h6 {
 .site-header .navbar-nav .nav-link.active {
   font-weight: 500;
 }
+
+
+
+.navbar-custom .navbar-nav > li > a {
+    color:#ffffff;
+}
+
+.navbar-custom .navbar-nav > li > a:hover,
+.navbar-custom .navbar-nav > li > a:focus,
+.navbar-custom .navbar-nav > .active > a:hover,
+.navbar-custom .navbar-nav > .active > a:focus,
+.navbar-custom .navbar-nav > .open >a {
+    text-decoration: none;
+    background-color: #33aa33;
+}
+
 
 .content-section {
   background: #ffffff;
@@ -40,11 +73,53 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 20px;
 }
 
-
 .floatRight{
     float: right;
 }
 
+.floatLeft{
+  float: left;
+}
+
+.add-ques-btn{
+  display: inline-block;
+      padding: inherit;
+
+    /* padding: 6px 12px; */
+    margin-bottom: 0;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.taken-test-btn{
+  display: inline-block;
+    /* padding: 6px 12px; */
+    margin-bottom: 0;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
 
 a.article-title {
   color: #007bfe;
@@ -85,7 +160,7 @@ a.article-title {
 }
 
 p {
-    font-size: 1.25rem;
+    font-size: 2.25rem;
 }
 
 #title {
@@ -170,7 +245,7 @@ button {
 }
 
 #container {
-    width:150%;
+    width:auto;
     margin:auto;
     padding: 0 25px 55px 10px;
 	background-color: #DCDCDC;
@@ -212,7 +287,7 @@ ul {
 
 input[type="radio"]{
     margin: 0 -4px 0 10px;
-    font-size: 0.7rem; 
+    font-size: 0.9rem; 
     width: 2%;
     height: 2em;   
 }
@@ -228,4 +303,14 @@ label {
     margin-bottom: .5rem;
     font-size: 20px;
     cursor: pointer;
+}
+
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+  text-align: left;    
 }

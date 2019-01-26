@@ -95,6 +95,7 @@ class UserTest(db.Model):
 	correct_answers = db.Column(db.Integer, nullable=False, default=0)
 	wrong_answers = db.Column(db.Integer, nullable=False, default=0)
 	no_answers = db.Column(db.Integer, nullable=False, default=0)
+	attempted_ques = db.Column(db.Integer, nullable=False, default=0)
 	test_taken_on_date = db.Column(db.DateTime(timezone=True), nullable=False, default=datetime.now)	
 	__table_args__ = (db.UniqueConstraint('test_id', 'user_id'), )
 

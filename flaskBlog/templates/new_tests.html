@@ -2,10 +2,11 @@
 {% extends "layout.html" %}
 
 
-{% block content %}
+{% block app_content %}
+
 <h1></h1>
 	<head>
-		<title>Dynamic Quiz Project</title>
+		<title> Quiz Project</title>
 		<link rel="text/css" type="text/css" href=" {{ url_for('static', filename='stylesheet.css')}} " >
 	</head>
    	 <div id='container' class='container'>
@@ -38,10 +39,10 @@
     		<button class='' id='prev'>Prev</a></button>
     		<button class='' id='start'> Start Over</a></button> -->
     	</div>
-
+      
+    <script type='text/javascript' src='{{ url_for('static', filename='js/jquery.min.js')}}'></script>
 		<script type='text/javascript' src='{{ url_for('static', filename='js/jsquiz.js')}}'></script>
 		<script type='text/javascript' src='{{ url_for('static', filename='js/popper.min.js')}}'></script>
 
 
-
-{% endblock content %}
+{% endblock app_content %}

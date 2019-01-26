@@ -1,7 +1,6 @@
 
 
 function selectradio(event){
-   console.log(event);
       var $radio = $(event.target)       // if this was previously checked
       if ($radio.data('waschecked') == true)
       {
@@ -47,11 +46,9 @@ function selectradio(event){
     $('#test_instr_div').hide();
 
      var t = $('#time_in_mins_div').text();
-     console.log('from js time_in_mins is : ' + t);
      t = t * 60;
 
      var test_id = $('#test_id_div').text();
-     console.log("printing test_id before ajax" + test_id);
 
      getQuestions(test_id);
 
@@ -75,7 +72,6 @@ function selectradio(event){
         }
 
         function timer(count,str) {
-          console.log("called");
               count--;
               if(count!= 0 && count < 600){
                 str = str + "<div id='remain' style='display:block'>Last 10 minutes remaining</div>."
@@ -162,13 +158,7 @@ function selectradio(event){
     
     var header = $('<h2>Question ' + (index + 1) + ' : ' + questions[index].section + '</h2>');
     qElement.append(header);
-    
-
-    console.log('printing question below : ');
-    console.log(questions[index].question);
-
-    console.log(questions[index].section);
-
+  
     var question = $('<p>').append(questions[index].question);
     qElement.append(question);
     
@@ -226,7 +216,6 @@ function getQuestions(test_id){
       $('#question').remove();
       if(questionCounter < questions.length){
                 $('#end_of_test_div').hide();
-              console.log('in if case : ' + questionCounter);
         var nextQuestion = createQuestionElement(questionCounter);
         quiz.append(nextQuestion).fadeIn();
         if (!(isNaN(selections[questionCounter]))) {
@@ -242,16 +231,7 @@ function getQuestions(test_id){
           $('#next').show();
         }
       }else {
-              console.log('in else case : ' + questionCounter);
-      
-        console.log(questions.length-1);
-        console.log('questionCounter is = questions.length-1' + questionCounter);
-       
-        
         $('#next').hide();
-        //$('#prev').hide();
-        console.log("calling myFunction");
-        console.log('selections in else is : ' + selections); 
         $('#end_of_test_div').show();
 
       }
@@ -260,7 +240,6 @@ function getQuestions(test_id){
 
     // Click handler for the 'submitQuiz' button
   $('#submitQuiz').on('click', function (e) {
-        console.log("Diff String called");
         $('#end_of_test_div').hide();
         isSubmit = 1;
         $('#timerCount').hide();
@@ -277,25 +256,19 @@ function getQuestions(test_id){
 var questionsAns;
  
 function getAnswers(test_id){
-
-  console.log("getAnswers called");
-  console.log("test_id is" + test_id);
   test_id = test_id.replace(/ /g,'');
-
             $.ajax({
             url: "/test_get_answers/",
             type: "POST",
             data: {"test_id":test_id},
             success: function(data) {
-        console.log("Printing Answers data.");
-        console.log(data);
             let parsedData = JSON.parse(data);
             questionsAns = parsedData;
             var scoreElem = displayScore(questionsAns);
             quiz.append(scoreElem).fadeIn();
             },
             error: function(data) {
-                alert("Error getting questions from server");
+                console.log("Error getting questions from server");
             }
         }); 
 }
@@ -308,41 +281,27 @@ function getAnswers(test_id){
     var no_of_correct_ans_ques = 0;
     var no_of_wrong_ans_ques = 0;
     var no_of_not_ans_ques = 0;
+    var no_of_attempted_ans_ques = 0;
+
 
 
   // Computes score and returns a paragraph element to be displayed
   function displayScore(questionsAns) {
     
     $('#question').hide();
-
     var score = $('<p>',{id: 'score'});
-
-
     var totalMarks = $('#total_marks_div').text();
-
-    console.log('printing questionsAns from displayScore' + questionsAns);
-
-    console.log('printing length of questions : ' + questionsAns.length);
-
-
-    console.log('printing selections : ' + selections);
-
-    console.log('selections.length is : ' + selections.length);
-
+    
     for (var i = 0; i < selections.length; i++) {
-
-      console.log('i is : ' + i);
-
+      if(!isNaN(selections[i]))
+      {
+        no_of_attempted_ans_ques += 1;
+      }
         var ans = questions[i].choices;
         var userAns = ans[selections[i]];
-        console.log(' userAns is : ' + userAns);
-        console.log(' correctAnswer is : ' + questionsAns[i].correctAnswer);
-
       if (userAns === questionsAns[i].correctAnswer) {
         positive_score += questionsAns[i].positive_marks;
         no_of_correct_ans_ques += 1;
-        console.log('positive_score is : ' + positive_score);
-        console.log("User Answer is correct, adding to score");
       }
       else if(userAns !== undefined)
       {
@@ -351,42 +310,44 @@ function getAnswers(test_id){
       }
       else
       {
-        console.log('no_of_not_ans_ques below');
-        console.log(ans[selections[i]]);
         no_of_not_ans_ques += 1;
       }
     }
-
-
     if(i < questionsAns.length-1)
     {
         no_of_not_ans_ques += questionsAns.length - i ;
     }
 
     var finalScore = positive_score - negative_score;
-    score.append('Your Score :-  ' + finalScore + ' / ' + 'out of' +  
-                 totalMarks + ' marks. <br> Marks for Correct Answers :- ' + positive_score + '<br>  Marks cut for Incorrect Answers :- ' +  negative_score
-                 + '<br> Correctly Answered Questions :- ' + no_of_correct_ans_ques + '<br> Incorrectly Answered Questions :- ' + no_of_wrong_ans_ques
-                 + '<br> Unanswered Questions :- ' + no_of_not_ans_ques);
+    score.append('&nbsp &nbsp &nbsp Report : ' + 
+    ' <br> Total Questions :- ' + questionsAns.length + 
+    ' <br> Questions Attempted :- ' + no_of_attempted_ans_ques + 
+    ' <br> Questions Not Attempted :- ' + no_of_not_ans_ques + 
+    ' <br> Your Score :-  ' + finalScore + ' / ' + totalMarks + 
+    ' <br> Positive Marks :- ' + positive_score + 
+    ' <br> Negative Marks :- ' + negative_score + 
+    ' <br> Answers Correct :- ' + no_of_correct_ans_ques + 
+    ' <br> Answers Wrong :- ' + no_of_wrong_ans_ques
+    );
+    
+
     var x = document.getElementById('submitQuiz');
     x.style.display = "none";
     $('#next').hide();
 
-    updateUserScore(finalScore, positive_score, negative_score, no_of_correct_ans_ques, no_of_wrong_ans_ques, no_of_not_ans_ques);
+    updateUserScore(finalScore, positive_score, negative_score,
+     no_of_correct_ans_ques, no_of_wrong_ans_ques, no_of_not_ans_ques, no_of_attempted_ans_ques);
     return score;
   }  
 
 
-function updateUserScore( finalScore, positive_score, negative_score, no_of_correct_ans_ques, no_of_wrong_ans_ques, no_of_not_ans_ques){
+function updateUserScore( finalScore, positive_score, negative_score, 
+  no_of_correct_ans_ques, no_of_wrong_ans_ques, no_of_not_ans_ques, no_of_attempted_ans_ques){
 
-  console.log("updateUserScore called");
   var test_id = $('#test_id_div').text();
-  console.log("test_id is" + test_id);
   test_id = test_id.replace(/ /g,'');
   var user_id = $('#user_id_div').text();
   user_id = user_id.replace(/ /g,'');
-
-
 
             $.ajax({
             url: "/test_update_user_score/",
@@ -394,19 +355,13 @@ function updateUserScore( finalScore, positive_score, negative_score, no_of_corr
             data: {"test_id":test_id, "user_id":user_id, "user_score":finalScore,
              "positive_score":positive_score, "negative_score":negative_score, "correct_answers":no_of_correct_ans_ques,
             "wrong_answers":no_of_wrong_ans_ques, 
-             "no_answers":no_of_not_ans_ques},
+             "no_answers":no_of_not_ans_ques, "no_of_attempted_ans_ques" : no_of_attempted_ans_ques},
             success: function(data) {
-        console.log("Printing response data.");
-        console.log(data);
-            let parsedData = JSON.parse(data);
-            questions = parsedData;
-                displayNext();
             },
             error: function(data) {
-                alert("Error getting questions from server");
+                console.log("Error updating user score");
             }
         }); 
 }
-
 
 })();

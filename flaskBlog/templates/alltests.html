@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 
-{% block content %}
+{% block app_content %}
 
 
 {% if current_user.is_authenticated %}
        
         {% if current_user.is_admin %}
 
-        <a class="btn btn-sm mt-1 mb-1 floatRight btn-primary" href="{{ url_for('new_test') }}">Add New Test</a>
+        <a class="btn add-ques-btn btn-sm mt-1 mb-1 floatLeft btn-primary" href="{{ url_for('new_test') }}">Add New Test</a>
         <br>
         {% endif  %}
 
@@ -17,13 +17,13 @@
     <article class="media content-section">
       <div class="media-body">
         <div class="article-metadata">
-          <h2> <a class=" mr-2 article-title" href="{{ url_for('test', test_id=test.id, user_id=current_user.id) }}">
+          <h3> <a class=" mr-2 article-title" href="{{ url_for('test', test_id=test.id, user_id=current_user.id) }}">
             Test : {{ test.test_name }}
            </a>
-          </h2
-          <small class="text-muted">
-            {{ test.date_posted.strftime('%Y-%m-%d') }}
-          </small>
+          </h3>
+          <h4 class="text-muted">
+            Added on : {{ test.date_posted.strftime('%Y-%m-%d') }}
+          </h4>
         </div>
       </div>
 
@@ -32,15 +32,14 @@
   {% endfor %}
 
 {% else %}
-
-      <div class="media-body">
-        <div class="article-metadata">
-        <h2> Please Login ! </h2>
-        </div>
-      </div>
+      
+    <div>
+      <div class="logout-class"> Please Login !</div>
+        <div class="article-metadata"></div>
+    </div>
 
 
 {% endif  %}
 
 
-{% endblock content %}
+{% endblock app_content %}
