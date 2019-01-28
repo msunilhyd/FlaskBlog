@@ -314,3 +314,8 @@ th, td {
   padding: 5px;
   text-align: left;    
 }
+
+
+.form-control {
+    font-size: 18px;
+  }
