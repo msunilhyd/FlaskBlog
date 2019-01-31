@@ -2,6 +2,18 @@ user = d@d.com/admin@123
 
 
 
+ALTER TABLE post MODIFY content text CHARACTER SET utf8;
+
+ALTER TABLE post CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+
+
+
+ALTER TABLE question MODIFY question_content text CHARACTER SET utf8;
+
+ALTER TABLE question CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+
+
+
   q = (db.session.query(Test, UserTest)
     .filter(Test.id == UserTest.test_id)
     .filter(UserTest.user_id == user_id)
@@ -259,3 +271,19 @@ ALTER TABLE questions MODIFY COLUMN question VARCHAR(1000);
 
           insert into questions(question,a,b,c,d,ans)
      values('Best Fifa Player', 'Linus', 'Sunil','Yashkp','Sudheer', 'd');
+
+
+set the below in /etc/mysql/my.conf for mathematical symbols support in mysql
+
+
+[client]
+default-character-set = utf8mb4
+
+[mysqld]
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+
+[mysql]
+default-character-set = utf8mb4
+
+insert into math(id, question_content) values(1, ' The potential energy of a particle of mass 𝑚 at a distance 𝑟 from a fixed point 𝑂 is given by 𝑉(𝑟) = 𝑘𝑟2/2, where 𝑘 is a positive constant of appropriate dimensions. This particle is moving in a circular orbit of radius 𝑅 about the point 𝑂. If 𝑣 is the speed of the particle and𝐿 is the magnitude of its angular momentum about 𝑂, which of the following statements is(are) true?');
