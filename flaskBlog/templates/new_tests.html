@@ -4,7 +4,11 @@
 
 {% block app_content %}
 
+
+
+
 <h1></h1>
+
 	<head>
 		<title> Quiz Project</title>
 		<link rel="text/css" type="text/css" href=" {{ url_for('static', filename='stylesheet.css')}} " >
@@ -38,11 +42,23 @@
     		<!-- <button class='' id='next'>Next</a></button>
     		<button class='' id='prev'>Prev</a></button>
     		<button class='' id='start'> Start Over</a></button> -->
-    	</div>
-      
+    	
+      </div>
+ 
+     <div id='container' class='container'>
+    
+        <div id='ques_buttons_div' > This is ques_buttons_div </div>
+  </div>
+<script>
+
+
+
+</script>
     <script type='text/javascript' src='{{ url_for('static', filename='js/jquery.min.js')}}'></script>
 		<script type='text/javascript' src='{{ url_for('static', filename='js/jsquiz.js')}}'></script>
 		<script type='text/javascript' src='{{ url_for('static', filename='js/popper.min.js')}}'></script>
-
+    <script>
+   
+    </script>
 
 {% endblock app_content %}

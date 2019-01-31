@@ -233,6 +233,26 @@ p {
     cursor: pointer;
 }
 
+.randomClass{
+    border:4px solid;
+    border-radius:5px;
+    width: 40px;
+    padding-left:5px;
+    padding-right: 5px;
+    position: relative;
+    float:center;
+    width:auto;
+    background-color: white;
+    color: #34495E;
+    margin: 12px 2px 0 2px;
+  text-decoration:none;
+    cursor: pointer;
+}
+
+#ques_buttons_div{
+    width:auto;
+}
+
 
 button {
     position: relative;
