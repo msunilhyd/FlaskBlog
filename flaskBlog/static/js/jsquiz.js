@@ -25,7 +25,7 @@
     $('#startQuiz').on('click', function(e) {
 
     $("a.nav-item").off('click').on('click',function(e){
-      var b = confirm("Your test will be sumbit if you leave.");
+      var b = confirm("Your test will be auto-sumbit if you leave with still time left.");
       if(!b){
         e.preventDefault();
         return false;
@@ -45,8 +45,6 @@
         t = t * 60;
 
         var test_id = $('#test_id_div').text();
-
-
 
 
         getQuestions(test_id);
