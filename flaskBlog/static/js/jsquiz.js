@@ -116,8 +116,6 @@
             item += input;
         }
 
-        console.log('printing item below : ');
-        console.log(item)
         item = "Navigation for Questions <br>" + item;
         document.getElementById('ques_buttons_div').innerHTML = item;
     }
@@ -159,29 +157,6 @@
     });
 
 
-
-    // Click handler for the 'prev' button
-    $('#randomClass').on('click', function(e) {
-      console.log(this.value);
-        e.preventDefault();
-        if (quiz.is(':animated')) {
-            return false;
-        }
-
-        if (questionCounter < questions.length) {
-            choose();
-        }
-
-        console.log('printing e from random click');
-        console.log(e);
-        console.log(e.name);
-        console.log(e.id);
-
-
-        questionCounter = 6;
-
-        displayNext();
-    });
 
 
     // Animates buttons on hover
@@ -263,10 +238,15 @@ window.randomQuesFun  = function(i) {
 
     console.log("print i as below")
     console.log(i);
-    questionCounter = i;
 
-    displayNext();
+    
 
+        if (i < questions.length) {
+            choose();
+        }
+
+        questionCounter = i;
+        displayNext();       
 }
 
 window.selectradio = function (event) {
