@@ -28,7 +28,7 @@
     {
 
           console.log('timerCount is visible');
-          var b = confirm("Your test will be auto-sumbit if you leave with still time left.");
+          var b = confirm("Your test will auto-sumbit if you leave with still time left.");
           if(!b){
             e.preventDefault();
             return false;
