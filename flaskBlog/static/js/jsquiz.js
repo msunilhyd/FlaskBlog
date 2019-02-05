@@ -1,8 +1,6 @@
 
 
 
-
-
 (function() {
 
     var questions = [];
@@ -25,15 +23,25 @@
     $('#startQuiz').on('click', function(e) {
 
     $("a.nav-item").off('click').on('click',function(e){
-      var b = confirm("Your test will be auto-sumbit if you leave with still time left.");
-      if(!b){
-        e.preventDefault();
-        return false;
-      }
-      else
-      {
-        $('#submitQuiz').click();
-      }
+
+    if($('#timerCount').css('display') != 'none')
+    {
+
+          console.log('timerCount is visible');
+          var b = confirm("Your test will be auto-sumbit if you leave with still time left.");
+          if(!b){
+            e.preventDefault();
+            return false;
+          }
+          else
+          {
+            $('#submitQuiz').click();
+          }
+    }
+    else
+    {
+        console.log('timerCount is hidden');  
+    }
     });
 
 
@@ -238,6 +246,7 @@ window.randomQuesFun  = function(i) {
     console.log(i);
 
     
+        $('#prev').show();
 
         if (i < questions.length) {
             choose();
@@ -252,13 +261,16 @@ window.selectradio = function (event) {
     var $radio = $(event.target) // if this was previously checked
     
     if ($radio.data('waschecked') == true) {
+
+        console.log('radio = data waschecked');
         $radio.prop('checked', false);
         $radio.data('waschecked', false);
         document.getElementById('random' + questionCounter).style.background='none';
 
     } else {
         $radio.data('waschecked', true); // remove was checked from other radio
-        
+               console.log('radio = data not waschecked');
+ 
         document.getElementById('random' + questionCounter).style.background='yellow';
     }
     // $radio.siblings('input[name="rad"]').data('waschecked', false);
@@ -281,6 +293,7 @@ window.displayNext  = function() {
                 quiz.append(nextQuestion).fadeIn();
                 if (!(isNaN(selections[questionCounter]))) {
                     $('input[value=' + selections[questionCounter] + ']').prop('checked', true);
+                    $('input[value=' + selections[questionCounter] + ']').data('waschecked', true);
                 }
 
                 // Controls display of 'prev' button
