@@ -209,7 +209,7 @@ p {
     background-color: #DCDCDC;
     color: blue;
     margin: 12px 2px 0 2px;
-	  left: 1%;
+    left: 1%;
     cursor: pointer;
 }
 
@@ -229,7 +229,7 @@ p {
     background-color: #DCDCDC;
     color: lightseagreen;
     margin: 12px 2px 0 2px;
-	text-decoration:none;
+  text-decoration:none;
     cursor: pointer;
 }
 
@@ -268,10 +268,10 @@ button {
     width:auto;
     margin:auto;
     padding: 0 25px 55px 10px;
-	background-color: #DCDCDC;
+  background-color: #DCDCDC;
     border:4px solid #B0E0E6;
     border-radius:5px;
-	color: black;
+  color: black;
     font-weight: bold;
     box-shadow: 5px 5px 5px #888;
 }
@@ -286,7 +286,7 @@ ul {
 
 #prev {
     display:none;
-	width: auto;
+  width: auto;
 }
 
 #next {
@@ -302,7 +302,7 @@ ul {
 
 #submitQuiz{
     display:none;
-	width: auto;
+  width: auto;
 }
 
 input[type="radio"]{
@@ -322,20 +322,22 @@ label {
     display: inline-block;
     margin-bottom: .5rem;
     font-size: 20px;
-    cursor: pointer;
-}
-
-
-table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-th, td {
-  padding: 5px;
-  text-align: left;    
+    cursor: pointer;    
+    vertical-align: middle;
 }
 
 
 .form-control {
     font-size: 18px;
   }
+
+.navbar-brand {
+    font-size: 28px;
+}
+
+#tick {
+    color: green;
+    vertical-align: middle;
+    font-size: 23px;
+}
+
