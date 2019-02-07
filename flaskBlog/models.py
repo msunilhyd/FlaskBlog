@@ -1,9 +1,7 @@
-from flaskBlog import db, login_manager, admin
+from flaskBlog import db, login_manager
 from datetime import datetime
 from flask_login import UserMixin
 from sqlalchemy.sql import func
-from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
 
 
 
@@ -102,9 +100,3 @@ class UserTest(db.Model):
 
 
 
-admin.add_view(ModelView(User, db.session))
-admin.add_view(ModelView(Post, db.session))
-admin.add_view(ModelView(Test, db.session))
-admin.add_view(ModelView(Question, db.session))
-admin.add_view(ModelView(TestQuestion, db.session))
-admin.add_view(ModelView(UserTest, db.session))
