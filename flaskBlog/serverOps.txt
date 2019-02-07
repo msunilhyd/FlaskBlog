@@ -1,4 +1,8 @@
 
+
+./ngrok http 5000
+
+
 ssh
 	ssh root@139.162.34.166
 
