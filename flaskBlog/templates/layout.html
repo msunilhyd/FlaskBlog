@@ -58,9 +58,6 @@
 {% block scripts %}
     <link rel="script" type="text/js" href=" {{ url_for('static', filename='jquery.js')}} " >
     <link rel="stylesheet" type="text/css" href=" {{ url_for('static', filename='stylesheet.css')}} " >
-
-  <script src="my_app_code.js">
-
     {{ super() }}
     {{ moment.include_moment() }}
 {% endblock %}
