@@ -12,7 +12,7 @@ from flask_moment import Moment
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'MY_SECRET_KEY'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8mb4'.format('demouser', 'demopassword', 'localhost', 3306, 'demodb')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8mb4'.format('demouser', 'demopassword', '139.162.34.166', 3306, 'demodb')
 app.config['MYSQL_DATABASE_USER'] = 'demouser';
 app.config['MYSQL_DATABASE_PASSWORD'] = 'demopassword';
 app.config['MYSQL_DATABASE_DB'] = 'demodb';
