@@ -26,7 +26,7 @@
                     {% if current_user.is_anonymous %}
                     <li><a class="nav-item" href="{{ url_for('login') }}">Login</a></li>
                     {% else %}
-                    <li><a class="nav-item" href="{{ url_for('tests') }}">Tests</a></li>
+                    <li><a class="nav-item" href="{{ url_for('tests') }}">Polls</a></li>
                     <li><a class="nav-item" href="{{ url_for('account') }}">Profile</a></li>
                     <li><a class="nav-item" href="{{ url_for('logout') }}">Logout</a></li>
                     {% endif %}
